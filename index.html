@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>无尽植物大战僵尸 · Endless PvZ</title>
+<link rel=stylesheet href="css/style.css">
+</head>
+<body>
+<div id=app>
+  <div id=stage>
+    <canvas id=game width=1400 height=600></canvas>
+  </div>
+
+  <div id=hud>
+    <button id=btn-seeds title="更换出战植物">🌱</button>
+    <button id=btn-pause>⏸</button>
+    <button id=btn-sound>🔊</button>
+    <button id=btn-full>⛶</button>
+  </div>
+
+  <div id=loading>
+    <div class=title>无尽植物大战僵尸</div>
+    <div class=bar><i id=loadingbar></i></div>
+    <div id=loadingtext>载入素材…</div>
+  </div>
+
+  <div id=start class=hidden>
+    <div class=title>无尽植物大战僵尸</div>
+    <div class=sub>Endless Plants vs Zombies · 一波接一波，永无止境</div>
+    <div id=bestscore></div>
+    <button id=btn-start class=big>开始游戏</button>
+    <div class=hint>
+      <p>· 点击种子卡片，再点击草坪种植物</p>
+      <p>· 点击太阳图标收集阳光</p>
+      <p>· 用铲子移除植物；僵尸进屋即失败</p>
+      <p>· 解锁新植物后，点左上角 🌱 随时更换出战卡片</p>
+    </div>
+  </div>
+
+  <div id=gameover class=hidden>
+    <div class=title>游戏结束</div>
+    <div id=finalscore></div>
+    <div id=finalwave></div>
+    <button id=btn-retry class=big>再来一局</button>
+  </div>
+
+  <div id=pause class=hidden>
+    <div class=title>已暂停</div>
+    <button id=btn-resume class=big>继续</button>
+    <button id=btn-quit>回主菜单</button>
+  </div>
+
+  <div id=rotate class=hidden>
+    <div class=title>请横屏游戏 / rotate your device</div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/assets.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/entities.js"></script>
+<script src="js/game.js"></script>
+<script src="js/render.js"></script>
+<script src="js/input.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

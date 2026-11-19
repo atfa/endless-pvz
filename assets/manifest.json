@@ -1,0 +1,1537 @@
+{
+ "anim": {
+  "fx.crater": {
+   "idle": {
+    "cols": 1,
+    "fh": 61,
+    "file": "img/fx/crater/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 90,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/crater1.png"
+   }
+  },
+  "fx.finalwave": {
+   "idle": {
+    "cols": 1,
+    "fh": 71,
+    "file": "img/fx/finalwave/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 252,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/FinalWave.gif"
+   }
+  },
+  "fx.fume": {
+   "idle": {
+    "cols": 1,
+    "fh": 496,
+    "file": "img/fx/fume/idle.png",
+    "fps": 20,
+    "frames": 1,
+    "fw": 343,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/FumeShroom/FumeShroomBullet.gif"
+   }
+  },
+  "fx.huge": {
+   "idle": {
+    "cols": 1,
+    "fh": 30,
+    "file": "img/fx/huge/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 286,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/LargeWave.gif"
+   }
+  },
+  "fx.ice": {
+   "idle": {
+    "cols": 1,
+    "fh": 88,
+    "file": "img/fx/ice/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 776,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/splash.png"
+   }
+  },
+  "fx.mower": {
+   "idle": {
+    "cols": 1,
+    "fh": 57,
+    "file": "img/fx/mower/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 70,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/LawnCleaner.png"
+   }
+  },
+  "fx.mowerpool": {
+   "idle": {
+    "cols": 1,
+    "fh": 64,
+    "file": "img/fx/mowerpool/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 47,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/PoolCleaner.png"
+   }
+  },
+  "fx.pea": {
+   "idle": {
+    "cols": 1,
+    "fh": 34,
+    "file": "img/fx/pea/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 56,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PB00.gif"
+   }
+  },
+  "fx.pea2": {
+   "idle": {
+    "cols": 1,
+    "fh": 34,
+    "file": "img/fx/pea2/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 56,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PB01.gif"
+   }
+  },
+  "fx.peahit": {
+   "idle": {
+    "cols": 1,
+    "fh": 46,
+    "file": "img/fx/peahit/idle.png",
+    "fps": 24,
+    "frames": 1,
+    "fw": 52,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PeaBulletHit.gif"
+   }
+  },
+  "fx.shadow": {
+   "idle": {
+    "cols": 1,
+    "fh": 36,
+    "file": "img/fx/shadow/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 86,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/plantshadow32.png"
+   }
+  },
+  "fx.shovel": {
+   "idle": {
+    "cols": 1,
+    "fh": 34,
+    "file": "img/fx/shovel/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 76,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/Shovel/0.gif"
+   }
+  },
+  "fx.snowpea": {
+   "idle": {
+    "cols": 1,
+    "fh": 34,
+    "file": "img/fx/snowpea/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 56,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PB-10.gif"
+   }
+  },
+  "fx.star": {
+   "idle": {
+    "cols": 1,
+    "fh": 30,
+    "file": "img/fx/star/idle.png",
+    "fps": 20,
+    "frames": 1,
+    "fw": 30,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Starfruit/Star.gif"
+   }
+  },
+  "fx.sun": {
+   "idle": {
+    "cols": 12,
+    "fh": 79,
+    "file": "img/fx/sun/idle.png",
+    "fps": 12,
+    "frames": 29,
+    "fw": 79,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/Sun.gif"
+   }
+  },
+  "fx.zombiehand": {
+   "idle": {
+    "cols": 1,
+    "fh": 330,
+    "file": "img/fx/zombiehand/idle.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 2310,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/interface/ZombieHand.png"
+   }
+  },
+  "plant.boomerang": {
+   "idle": {
+    "cols": 1,
+    "fh": 66,
+    "file": "img/plant/boomerang/idle.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 65,
+    "src": "derived"
+   }
+  },
+  "plant.cabbagepult": {
+   "idle": {
+    "cols": 1,
+    "fh": 92,
+    "file": "img/plant/cabbagepult/idle.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 98,
+    "src": "https://plantsvszombies.wiki.gg/images/Cabbage-pult.png?ef4508"
+   }
+  },
+  "plant.cactus": {
+   "attack": {
+    "cols": 8,
+    "fh": 157,
+    "file": "img/plant/cactus/attack.png",
+    "fps": 18,
+    "frames": 18,
+    "fw": 122,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Cactus/Attack.gif"
+   },
+   "idle": {
+    "cols": 8,
+    "fh": 157,
+    "file": "img/plant/cactus/idle.png",
+    "fps": 12,
+    "frames": 15,
+    "fw": 122,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Cactus/Cactus.gif"
+   }
+  },
+  "plant.cherrybomb": {
+   "boom": {
+    "cols": 4,
+    "fh": 196,
+    "file": "img/plant/cherrybomb/boom.png",
+    "fps": 22,
+    "frames": 13,
+    "fw": 213,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/CherryBomb/Boom.gif"
+   },
+   "idle": {
+    "cols": 9,
+    "fh": 81,
+    "file": "img/plant/cherrybomb/idle.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 112,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/CherryBomb/CherryBomb.gif"
+   }
+  },
+  "plant.chomper": {
+   "attack": {
+    "cols": 7,
+    "fh": 114,
+    "file": "img/plant/chomper/attack.png",
+    "fps": 20,
+    "frames": 25,
+    "fw": 130,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Chomper/ChomperAttack.gif"
+   },
+   "digest": {
+    "cols": 7,
+    "fh": 114,
+    "file": "img/plant/chomper/digest.png",
+    "fps": 10,
+    "frames": 16,
+    "fw": 130,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Chomper/ChomperDigest.gif"
+   },
+   "idle": {
+    "cols": 7,
+    "fh": 114,
+    "file": "img/plant/chomper/idle.png",
+    "fps": 12,
+    "frames": 25,
+    "fw": 130,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Chomper/Chomper.gif"
+   }
+  },
+  "plant.doomshroom": {
+   "boom": {
+    "cols": 10,
+    "fh": 91,
+    "file": "img/plant/doomshroom/boom.png",
+    "fps": 20,
+    "frames": 22,
+    "fw": 102,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/DoomShroom/BeginBoom.gif"
+   },
+   "idle": {
+    "cols": 10,
+    "fh": 91,
+    "file": "img/plant/doomshroom/idle.png",
+    "fps": 12,
+    "frames": 25,
+    "fw": 102,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/DoomShroom/DoomShroom.gif"
+   }
+  },
+  "plant.fumeshroom": {
+   "attack": {
+    "cols": 1,
+    "fh": 88,
+    "file": "img/plant/fumeshroom/attack.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 100,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/FumeShroom/FumeShroomAttack.gif"
+   },
+   "idle": {
+    "cols": 10,
+    "fh": 88,
+    "file": "img/plant/fumeshroom/idle.png",
+    "fps": 12,
+    "frames": 17,
+    "fw": 100,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/FumeShroom/FumeShroom.gif"
+   }
+  },
+  "plant.garlic": {
+   "idle": {
+    "cols": 15,
+    "fh": 59,
+    "file": "img/plant/garlic/idle.png",
+    "fps": 8,
+    "frames": 15,
+    "fw": 60,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Garlic/Garlic.gif"
+   }
+  },
+  "plant.gatlingpea": {
+   "idle": {
+    "cols": 11,
+    "fh": 84,
+    "file": "img/plant/gatlingpea/idle.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 88,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/GatlingPea/GatlingPea.gif"
+   }
+  },
+  "plant.gloomshroom": {
+   "attack": {
+    "cols": 9,
+    "fh": 81,
+    "file": "img/plant/gloomshroom/attack.png",
+    "fps": 16,
+    "frames": 16,
+    "fw": 112,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/GloomShroom/GloomShroomAttack.gif"
+   },
+   "idle": {
+    "cols": 9,
+    "fh": 81,
+    "file": "img/plant/gloomshroom/idle.png",
+    "fps": 12,
+    "frames": 19,
+    "fw": 112,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/GloomShroom/GloomShroom.gif"
+   }
+  },
+  "plant.iceshroom": {
+   "boom": {
+    "cols": 1,
+    "fh": 144,
+    "file": "img/plant/iceshroom/boom.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/IceShroom/Snow.gif"
+   },
+   "idle": {
+    "cols": 12,
+    "fh": 75,
+    "file": "img/plant/iceshroom/idle.png",
+    "fps": 12,
+    "frames": 17,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/IceShroom/IceShroom.gif"
+   }
+  },
+  "plant.jalapeno": {
+   "boom": {
+    "cols": 2,
+    "fh": 131,
+    "file": "img/plant/jalapeno/boom.png",
+    "fps": 20,
+    "frames": 13,
+    "fw": 755,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Jalapeno/JalapenoAttack.gif"
+   },
+   "idle": {
+    "cols": 13,
+    "fh": 89,
+    "file": "img/plant/jalapeno/idle.png",
+    "fps": 12,
+    "frames": 13,
+    "fw": 68,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Jalapeno/Jalapeno.gif"
+   }
+  },
+  "plant.melonpult": {
+   "idle": {
+    "cols": 1,
+    "fh": 56,
+    "file": "img/plant/melonpult/idle.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 73,
+    "src": "derived"
+   }
+  },
+  "plant.peashooter": {
+   "attack": {
+    "cols": 5,
+    "fh": 71,
+    "file": "img/plant/peashooter/attack.png",
+    "fps": 20,
+    "frames": 5,
+    "fw": 71,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Peashooter/Peashooter.gif"
+   },
+   "idle": {
+    "cols": 14,
+    "fh": 71,
+    "file": "img/plant/peashooter/idle.png",
+    "fps": 12,
+    "frames": 20,
+    "fw": 71,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Peashooter/Peashooter.gif"
+   }
+  },
+  "plant.potatomine": {
+   "armed": {
+    "cols": 11,
+    "fh": 55,
+    "file": "img/plant/potatomine/armed.png",
+    "fps": 8,
+    "frames": 11,
+    "fw": 75,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PotatoMine/PotatoMine.gif"
+   },
+   "boom": {
+    "cols": 1,
+    "fh": 58,
+    "file": "img/plant/potatomine/boom.png",
+    "fps": 12,
+    "frames": 1,
+    "fw": 186,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PotatoMine/ExplosionSpudow.gif"
+   },
+   "ready": {
+    "cols": 1,
+    "fh": 55,
+    "file": "img/plant/potatomine/ready.png",
+    "fps": 8,
+    "frames": 1,
+    "fw": 75,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PotatoMine/PotatoMineNotReady.gif"
+   }
+  },
+  "plant.puffshroom": {
+   "idle": {
+    "cols": 17,
+    "fh": 66,
+    "file": "img/plant/puffshroom/idle.png",
+    "fps": 12,
+    "frames": 17,
+    "fw": 40,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PuffShroom/PuffShroom.gif"
+   },
+   "sleep": {
+    "cols": 17,
+    "fh": 66,
+    "file": "img/plant/puffshroom/sleep.png",
+    "fps": 6,
+    "frames": 17,
+    "fw": 40,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PuffShroom/PuffShroomSleep.gif"
+   }
+  },
+  "plant.pumpkin": {
+   "idle": {
+    "cols": 10,
+    "fh": 67,
+    "file": "img/plant/pumpkin/idle.png",
+    "fps": 8,
+    "frames": 21,
+    "fw": 97,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/PumpkinHead/PumpkinHead.gif"
+   }
+  },
+  "plant.repeater": {
+   "attack": {
+    "cols": 5,
+    "fh": 71,
+    "file": "img/plant/repeater/attack.png",
+    "fps": 20,
+    "frames": 5,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Repeater/Repeater.gif"
+   },
+   "idle": {
+    "cols": 14,
+    "fh": 71,
+    "file": "img/plant/repeater/idle.png",
+    "fps": 12,
+    "frames": 20,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Repeater/Repeater.gif"
+   }
+  },
+  "plant.snowpea": {
+   "attack": {
+    "cols": 5,
+    "fh": 71,
+    "file": "img/plant/snowpea/attack.png",
+    "fps": 20,
+    "frames": 5,
+    "fw": 71,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/SnowPea/SnowPea.gif"
+   },
+   "idle": {
+    "cols": 14,
+    "fh": 71,
+    "file": "img/plant/snowpea/idle.png",
+    "fps": 12,
+    "frames": 20,
+    "fw": 71,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/SnowPea/SnowPea.gif"
+   }
+  },
+  "plant.spikerock": {
+   "idle": {
+    "cols": 12,
+    "fh": 43,
+    "file": "img/plant/spikerock/idle.png",
+    "fps": 8,
+    "frames": 15,
+    "fw": 84,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Spikerock/Spikerock.gif"
+   }
+  },
+  "plant.spikeweed": {
+   "idle": {
+    "cols": 12,
+    "fh": 35,
+    "file": "img/plant/spikeweed/idle.png",
+    "fps": 8,
+    "frames": 21,
+    "fw": 85,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Spikeweed/Spikeweed.gif"
+   }
+  },
+  "plant.splitpea": {
+   "idle": {
+    "cols": 11,
+    "fh": 72,
+    "file": "img/plant/splitpea/idle.png",
+    "fps": 12,
+    "frames": 13,
+    "fw": 92,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/SplitPea/SplitPea.gif"
+   }
+  },
+  "plant.squash": {
+   "attack": {
+    "cols": 3,
+    "fh": 113,
+    "file": "img/plant/squash/attack.png",
+    "fps": 14,
+    "frames": 3,
+    "fw": 100,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Squash/SquashAttack.gif"
+   },
+   "idle": {
+    "cols": 10,
+    "fh": 113,
+    "file": "img/plant/squash/idle.png",
+    "fps": 12,
+    "frames": 19,
+    "fw": 100,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Squash/Squash.gif"
+   }
+  },
+  "plant.starfruit": {
+   "idle": {
+    "cols": 13,
+    "fh": 70,
+    "file": "img/plant/starfruit/idle.png",
+    "fps": 12,
+    "frames": 17,
+    "fw": 77,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Starfruit/Starfruit.gif"
+   }
+  },
+  "plant.sunflower": {
+   "idle": {
+    "cols": 14,
+    "fh": 74,
+    "file": "img/plant/sunflower/idle.png",
+    "fps": 12,
+    "frames": 50,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/SunFlower/SunFlower.gif"
+   },
+   "produce": {
+    "cols": 14,
+    "fh": 74,
+    "file": "img/plant/sunflower/produce.png",
+    "fps": 14,
+    "frames": 25,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/SunFlower/SunFlower1.gif"
+   }
+  },
+  "plant.tallnut": {
+   "broken": {
+    "cols": 12,
+    "fh": 119,
+    "file": "img/plant/tallnut/broken.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/TallNut/TallnutCracked2.gif"
+   },
+   "cracked": {
+    "cols": 12,
+    "fh": 119,
+    "file": "img/plant/tallnut/cracked.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/TallNut/TallnutCracked1.gif"
+   },
+   "idle": {
+    "cols": 12,
+    "fh": 119,
+    "file": "img/plant/tallnut/idle.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/TallNut/TallNut.gif"
+   }
+  },
+  "plant.threepeater": {
+   "idle": {
+    "cols": 14,
+    "fh": 80,
+    "file": "img/plant/threepeater/idle.png",
+    "fps": 12,
+    "frames": 16,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Threepeater/Threepeater.gif"
+   }
+  },
+  "plant.torchwood": {
+   "idle": {
+    "cols": 14,
+    "fh": 87,
+    "file": "img/plant/torchwood/idle.png",
+    "fps": 8,
+    "frames": 21,
+    "fw": 73,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/Torchwood/Torchwood.gif"
+   }
+  },
+  "plant.twinflower": {
+   "idle": {
+    "cols": 12,
+    "fh": 84,
+    "file": "img/plant/twinflower/idle.png",
+    "fps": 12,
+    "frames": 50,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/TwinSunflower/TwinSunflower.gif"
+   },
+   "produce": {
+    "cols": 12,
+    "fh": 84,
+    "file": "img/plant/twinflower/produce.png",
+    "fps": 14,
+    "frames": 25,
+    "fw": 83,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/TwinSunflower/TwinSunflower1.gif"
+   }
+  },
+  "plant.wallnut": {
+   "broken": {
+    "cols": 15,
+    "fh": 73,
+    "file": "img/plant/wallnut/broken.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 65,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/WallNut/Wallnut_cracked2.gif"
+   },
+   "cracked": {
+    "cols": 15,
+    "fh": 73,
+    "file": "img/plant/wallnut/cracked.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 65,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/WallNut/Wallnut_cracked1.gif"
+   },
+   "idle": {
+    "cols": 15,
+    "fh": 73,
+    "file": "img/plant/wallnut/idle.png",
+    "fps": 8,
+    "frames": 17,
+    "fw": 65,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Plants/WallNut/WallNut.gif"
+   }
+  },
+  "plant.wintermelon": {
+   "idle": {
+    "cols": 1,
+    "fh": 96,
+    "file": "img/plant/wintermelon/idle.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 103,
+    "src": "https://plantsvszombies.wiki.gg/images/Winter_Melon.png?638074"
+   }
+  },
+  "zombie.ankylosaur": {
+   "die": {
+    "cols": 1,
+    "fh": 64,
+    "file": "img/zombie/ankylosaur/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 128,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 66,
+    "file": "img/zombie/ankylosaur/walk.png",
+    "fps": 6,
+    "frames": 4,
+    "fw": 128,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.backup": {
+   "attack": {
+    "cols": 7,
+    "fh": 180,
+    "file": "img/zombie/backup/attack.png",
+    "fps": 14,
+    "frames": 15,
+    "fw": 130,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BackupDancer/Attack.gif"
+   },
+   "die": {
+    "cols": 4,
+    "fh": 165,
+    "file": "img/zombie/backup/die.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 250,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BackupDancer/Die.gif"
+   },
+   "mound": {
+    "cols": 8,
+    "fh": 162,
+    "file": "img/zombie/backup/mound.png",
+    "fps": 12,
+    "frames": 20,
+    "fw": 126,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BackupDancer/Mound.gif"
+   },
+   "walk": {
+    "cols": 7,
+    "fh": 180,
+    "file": "img/zombie/backup/walk.png",
+    "fps": 12,
+    "frames": 15,
+    "fw": 130,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BackupDancer/BackupDancer.gif"
+   }
+  },
+  "zombie.balloon": {
+   "attack": {
+    "cols": 4,
+    "fh": 197,
+    "file": "img/zombie/balloon/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 207,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BalloonZombie/Attack.gif"
+   },
+   "die": {
+    "cols": 4,
+    "fh": 197,
+    "file": "img/zombie/balloon/die.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 207,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BalloonZombie/Die.gif"
+   },
+   "drop": {
+    "cols": 6,
+    "fh": 197,
+    "file": "img/zombie/balloon/drop.png",
+    "fps": 18,
+    "frames": 29,
+    "fw": 207,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BalloonZombie/Drop.gif"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 197,
+    "file": "img/zombie/balloon/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 207,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BalloonZombie/Walk.gif"
+   }
+  },
+  "zombie.basic": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/basic/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/ZombieAttack.gif"
+   },
+   "die": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/basic/die.png",
+    "fps": 16,
+    "frames": 16,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/ZombieDie.gif"
+   },
+   "head": {
+    "cols": 6,
+    "fh": 186,
+    "file": "img/zombie/basic/head.png",
+    "fps": 16,
+    "frames": 12,
+    "fw": 150,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/ZombieHead.gif"
+   },
+   "losthead": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/basic/losthead.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/ZombieLostHead.gif"
+   },
+   "losthead_attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/basic/losthead_attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/ZombieLostHeadAttack.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/basic/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zombie/Zombie.gif"
+   }
+  },
+  "zombie.beholder": {
+   "die": {
+    "cols": 1,
+    "fh": 96,
+    "file": "img/zombie/beholder/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 288,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   },
+   "walk": {
+    "cols": 2,
+    "fh": 240,
+    "file": "img/zombie/beholder/walk.png",
+    "fps": 4,
+    "frames": 2,
+    "fw": 288,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   }
+  },
+  "zombie.bomber": {
+   "die": {
+    "cols": 1,
+    "fh": 125,
+    "file": "img/zombie/bomber/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 198,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   },
+   "walk": {
+    "cols": 2,
+    "fh": 312,
+    "file": "img/zombie/bomber/walk.png",
+    "fps": 4,
+    "frames": 2,
+    "fw": 198,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   }
+  },
+  "zombie.buckethead": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/buckethead/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BucketheadZombie/BucketheadZombieAttack.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/buckethead/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/BucketheadZombie/BucketheadZombie.gif"
+   }
+  },
+  "zombie.conehead": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/conehead/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/ConeheadZombie/ConeheadZombieAttack.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/conehead/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/ConeheadZombie/ConeheadZombie.gif"
+   }
+  },
+  "zombie.dancing": {
+   "attack": {
+    "cols": 5,
+    "fh": 176,
+    "file": "img/zombie/dancing/attack.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 184,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/DancingZombie/Attack.gif"
+   },
+   "dance": {
+    "cols": 5,
+    "fh": 176,
+    "file": "img/zombie/dancing/dance.png",
+    "fps": 12,
+    "frames": 16,
+    "fw": 184,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/DancingZombie/Dancing.gif"
+   },
+   "die": {
+    "cols": 5,
+    "fh": 176,
+    "file": "img/zombie/dancing/die.png",
+    "fps": 16,
+    "frames": 16,
+    "fw": 184,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/DancingZombie/Die.gif"
+   },
+   "summon": {
+    "cols": 5,
+    "fh": 176,
+    "file": "img/zombie/dancing/summon.png",
+    "fps": 14,
+    "frames": 7,
+    "fw": 184,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/DancingZombie/Summon1.gif"
+   },
+   "walk": {
+    "cols": 5,
+    "fh": 176,
+    "file": "img/zombie/dancing/walk.png",
+    "fps": 12,
+    "frames": 15,
+    "fw": 184,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/DancingZombie/DancingZombie.gif"
+   }
+  },
+  "zombie.egg": {
+   "walk": {
+    "cols": 2,
+    "fh": 32,
+    "file": "img/zombie/egg/walk.png",
+    "fps": 2,
+    "frames": 2,
+    "fw": 32,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.flag": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/flag/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FlagZombie/FlagZombieAttack.gif"
+   },
+   "losthead": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/flag/losthead.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FlagZombie/FlagZombieLostHead.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/flag/walk.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FlagZombie/FlagZombie.gif"
+   }
+  },
+  "zombie.football": {
+   "attack": {
+    "cols": 6,
+    "fh": 172,
+    "file": "img/zombie/football/attack.png",
+    "fps": 18,
+    "frames": 14,
+    "fw": 154,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FootballZombie/Attack.gif"
+   },
+   "die": {
+    "cols": 4,
+    "fh": 170,
+    "file": "img/zombie/football/die.png",
+    "fps": 18,
+    "frames": 18,
+    "fw": 236,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FootballZombie/Die.gif"
+   },
+   "losthead": {
+    "cols": 6,
+    "fh": 172,
+    "file": "img/zombie/football/losthead.png",
+    "fps": 16,
+    "frames": 15,
+    "fw": 154,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FootballZombie/LostHead.gif"
+   },
+   "ornlost": {
+    "cols": 6,
+    "fh": 172,
+    "file": "img/zombie/football/ornlost.png",
+    "fps": 16,
+    "frames": 15,
+    "fw": 154,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FootballZombie/OrnLost.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 172,
+    "file": "img/zombie/football/walk.png",
+    "fps": 16,
+    "frames": 15,
+    "fw": 154,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/FootballZombie/FootballZombie.gif"
+   }
+  },
+  "zombie.gargantuar": {
+   "attack": {
+    "cols": 7,
+    "fh": 400,
+    "file": "img/zombie/gargantuar/attack.png",
+    "fps": 16,
+    "frames": 14,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/LGBOSS/2.gif"
+   },
+   "boom": {
+    "cols": 5,
+    "fh": 400,
+    "file": "img/zombie/gargantuar/boom.png",
+    "fps": 18,
+    "frames": 10,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/LGBOSS/5.gif"
+   },
+   "die": {
+    "cols": 3,
+    "fh": 400,
+    "file": "img/zombie/gargantuar/die.png",
+    "fps": 16,
+    "frames": 6,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/LGBOSS/3.gif"
+   },
+   "walk": {
+    "cols": 7,
+    "fh": 400,
+    "file": "img/zombie/gargantuar/walk.png",
+    "fps": 10,
+    "frames": 14,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/LGBOSS/1.gif"
+   }
+  },
+  "zombie.imp": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/imp/attack.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Imp/ZombieAttack.gif"
+   },
+   "die": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/imp/die.png",
+    "fps": 16,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Imp/ZombieDie.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/imp/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Imp/Zombie.gif"
+   }
+  },
+  "zombie.imposter": {
+   "die": {
+    "cols": 1,
+    "fh": 125,
+    "file": "img/zombie/imposter/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 198,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   },
+   "walk": {
+    "cols": 2,
+    "fh": 312,
+    "file": "img/zombie/imposter/walk.png",
+    "fps": 4,
+    "frames": 2,
+    "fw": 198,
+    "src": "local:kenney.nl Monster Builder Pack (CC0)"
+   }
+  },
+  "zombie.jackbox": {
+   "attack": {
+    "cols": 5,
+    "fh": 181,
+    "file": "img/zombie/jackbox/attack.png",
+    "fps": 16,
+    "frames": 15,
+    "fw": 196,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/JackinTheBoxZombie/Attack.gif"
+   },
+   "boom": {
+    "cols": 3,
+    "fh": 300,
+    "file": "img/zombie/jackbox/boom.png",
+    "fps": 20,
+    "frames": 6,
+    "fw": 306,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/JackinTheBoxZombie/Boom.gif"
+   },
+   "die": {
+    "cols": 5,
+    "fh": 181,
+    "file": "img/zombie/jackbox/die.png",
+    "fps": 16,
+    "frames": 16,
+    "fw": 196,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/JackinTheBoxZombie/Die.gif"
+   },
+   "walk": {
+    "cols": 5,
+    "fh": 181,
+    "file": "img/zombie/jackbox/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 196,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/JackinTheBoxZombie/Walk.gif"
+   }
+  },
+  "zombie.mustache": {
+   "attack": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/mustache/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/MustacheZombie/ZombieAttack.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 144,
+    "file": "img/zombie/mustache/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/MustacheZombie/Zombie.gif"
+   }
+  },
+  "zombie.newspaper": {
+   "attack": {
+    "cols": 4,
+    "fh": 164,
+    "file": "img/zombie/newspaper/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 216,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/NewspaperZombie/HeadAttack0.gif"
+   },
+   "die": {
+    "cols": 4,
+    "fh": 164,
+    "file": "img/zombie/newspaper/die.png",
+    "fps": 16,
+    "frames": 16,
+    "fw": 216,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/NewspaperZombie/Die.gif"
+   },
+   "enraged": {
+    "cols": 4,
+    "fh": 164,
+    "file": "img/zombie/newspaper/enraged.png",
+    "fps": 18,
+    "frames": 14,
+    "fw": 216,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/NewspaperZombie/LostHeadWalk0.gif"
+   },
+   "paper": {
+    "cols": 4,
+    "fh": 164,
+    "file": "img/zombie/newspaper/paper.png",
+    "fps": 16,
+    "frames": 13,
+    "fw": 216,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/NewspaperZombie/LostNewspaper.gif"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 164,
+    "file": "img/zombie/newspaper/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 216,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/NewspaperZombie/HeadWalk0.gif"
+   }
+  },
+  "zombie.polevault": {
+   "attack": {
+    "cols": 4,
+    "fh": 218,
+    "file": "img/zombie/polevault/attack.png",
+    "fps": 14,
+    "frames": 14,
+    "fw": 348,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/PoleVaultingZombie/PoleVaultingZombieAttack.gif"
+   },
+   "jump": {
+    "cols": 8,
+    "fh": 218,
+    "file": "img/zombie/polevault/jump.png",
+    "fps": 18,
+    "frames": 29,
+    "fw": 348,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/PoleVaultingZombie/PoleVaultingZombieJump.gif"
+   },
+   "losthead": {
+    "cols": 3,
+    "fh": 218,
+    "file": "img/zombie/polevault/losthead.png",
+    "fps": 12,
+    "frames": 10,
+    "fw": 348,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/PoleVaultingZombie/PoleVaultingZombieLostHead.gif"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 218,
+    "file": "img/zombie/polevault/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 348,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/PoleVaultingZombie/PoleVaultingZombieWalk.gif"
+   }
+  },
+  "zombie.pterosaur": {
+   "die": {
+    "cols": 1,
+    "fh": 96,
+    "file": "img/zombie/pterosaur/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 96,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 2,
+    "fh": 96,
+    "file": "img/zombie/pterosaur/walk.png",
+    "fps": 5,
+    "frames": 2,
+    "fw": 96,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.raptor": {
+   "die": {
+    "cols": 1,
+    "fh": 32,
+    "file": "img/zombie/raptor/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 32,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 34,
+    "file": "img/zombie/raptor/walk.png",
+    "fps": 6,
+    "frames": 4,
+    "fw": 32,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.sauropod": {
+   "die": {
+    "cols": 1,
+    "fh": 128,
+    "file": "img/zombie/sauropod/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 192,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 132,
+    "file": "img/zombie/sauropod/walk.png",
+    "fps": 6,
+    "frames": 4,
+    "fw": 192,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.screendoor": {
+   "attack": {
+    "cols": 6,
+    "fh": 157,
+    "file": "img/zombie/screendoor/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/ScreenDoorZombie/ScreenDoorZombieAttack.gif"
+   },
+   "shieldless": {
+    "cols": 6,
+    "fh": 157,
+    "file": "img/zombie/screendoor/shieldless.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/ScreenDoorZombie/HeadWalk1.gif"
+   },
+   "walk": {
+    "cols": 6,
+    "fh": 157,
+    "file": "img/zombie/screendoor/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 166,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/ScreenDoorZombie/ScreenDoorZombie.gif"
+   }
+  },
+  "zombie.snorkel": {
+   "attack": {
+    "cols": 7,
+    "fh": 210,
+    "file": "img/zombie/snorkel/attack.png",
+    "fps": 14,
+    "frames": 13,
+    "fw": 143,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/SnorkelZombie/Attack.gif"
+   },
+   "walk": {
+    "cols": 7,
+    "fh": 210,
+    "file": "img/zombie/snorkel/walk.png",
+    "fps": 12,
+    "frames": 14,
+    "fw": 143,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/SnorkelZombie/Walk1.gif"
+   }
+  },
+  "zombie.trex": {
+   "die": {
+    "cols": 1,
+    "fh": 128,
+    "file": "img/zombie/trex/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 192,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 132,
+    "file": "img/zombie/trex/walk.png",
+    "fps": 6,
+    "frames": 4,
+    "fw": 192,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.triceratops": {
+   "die": {
+    "cols": 1,
+    "fh": 64,
+    "file": "img/zombie/triceratops/die.png",
+    "fps": 1,
+    "frames": 1,
+    "fw": 96,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   },
+   "walk": {
+    "cols": 4,
+    "fh": 66,
+    "file": "img/zombie/triceratops/walk.png",
+    "fps": 6,
+    "frames": 4,
+    "fw": 96,
+    "src": "local:opengameart.org/content/dinosaurs (CC0)"
+   }
+  },
+  "zombie.zomboni": {
+   "boom": {
+    "cols": 4,
+    "fh": 364,
+    "file": "img/zombie/zomboni/boom.png",
+    "fps": 18,
+    "frames": 7,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zomboni/5.gif"
+   },
+   "die": {
+    "cols": 3,
+    "fh": 364,
+    "file": "img/zombie/zomboni/die.png",
+    "fps": 16,
+    "frames": 5,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zomboni/4.gif"
+   },
+   "walk": {
+    "cols": 7,
+    "fh": 364,
+    "file": "img/zombie/zomboni/walk.png",
+    "fps": 12,
+    "frames": 13,
+    "fw": 464,
+    "src": "https://cdn.jsdelivr.net/gh/studyzy/pvzjs@main/images/Zombies/Zomboni/1.gif"
+   }
+  }
+ },
+ "audio": {
+  "awooga": "audio/awooga.mp3",
+  "balloon": "audio/balloon.mp3",
+  "chomp": "audio/chomp.mp3",
+  "chompsoft": "audio/chompsoft.mp3",
+  "click": "audio/click.mp3",
+  "coin": "audio/coin.mp3",
+  "doom": "audio/doom.mp3",
+  "explosion": "audio/explosion.mp3",
+  "finalwave": "audio/finalwave.mp3",
+  "frozen": "audio/frozen.mp3",
+  "groan3": "audio/groan3.mp3",
+  "groan4": "audio/groan4.mp3",
+  "groan5": "audio/groan5.mp3",
+  "groan6": "audio/groan6.mp3",
+  "hugewave": "audio/hugewave.mp3",
+  "jalapeno": "audio/jalapeno.mp3",
+  "lose": "audio/lose.mp3",
+  "mower": "audio/mower.mp3",
+  "newspaper": "audio/newspaper.mp3",
+  "plant": "audio/plant.mp3",
+  "scream": "audio/scream.mp3",
+  "siren": "audio/siren.mp3",
+  "theme": "audio/theme.mp3",
+  "vault": "audio/vault.mp3",
+  "win": "audio/win.mp3",
+  "zamboni": "audio/zamboni.mp3"
+ },
+ "generated": "2026-11-19 13:21:03",
+ "images": {
+  "bg.lawn": "img/bg/lawn.jpg",
+  "bg.lawn_unsodded": "img/bg/lawn_unsodded.jpg",
+  "fx.melon": "img/fx/melon.png",
+  "fx.wmelon": "img/fx/wmelon.png",
+  "ui.button": "img/ui/button.png",
+  "ui.card": "img/ui/card.png",
+  "ui.flag_empty": "img/ui/flag_empty.png",
+  "ui.flag_full": "img/ui/flag_full.png",
+  "ui.flag_progress": "img/ui/flag_progress.png",
+  "ui.logo": "img/ui/logo.png",
+  "ui.seedbar": "img/ui/seedbar.png",
+  "ui.sunback": "img/ui/sunback.png",
+  "ui.zombies_won": "img/ui/zombies_won.png"
+ }
+}
