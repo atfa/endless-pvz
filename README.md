@@ -3,6 +3,15 @@
 An endless **Plants vs Zombies** — no levels, waves keep coming until the lawn is overrun.
 Runs as a **native Android APK** (WebView shell, fully offline) and in any desktop browser.
 
+> **Built 100 % on a phone.** No PC, no Android Studio, no Gradle — every line of code,
+> every build/sign/install step happened on the Android device itself, inside Termux, using the
+> [dev-apk-on-android](https://github.com/atfa/dev-apk-on-android) skill and the
+> **pi + duo** agent ([duo](https://github.com/atfa/duo) is the multi-agent orchestrator that
+> drove the work). The project is 100 % hand-written code (no Phaser/Pixi/jQuery); only the
+> art/audio assets are downloaded.
+>
+> 📦 Install the ready-made APK from the [Releases](../../releases) page (package `dev.xduo.plants`).
+
 ## Play
 
 * Install `pvz.apk` on the phone (Android 7.0+), rotate to landscape, tap **开始游戏**.
@@ -108,8 +117,8 @@ cd ~/apps/pvz && ./sync.sh     # copy game -> apk assets, build, install, launch
 ```
 
 `~/apps/pvz` holds the Android shell: `AndroidManifest.xml`,
-`src/com/example/pvz/MainActivity.java` (WebView + harness hooks) and
-`src/com/example/pvz/AssetServer.java` (loopback HTTP server that serves the
+`src/dev/xduo/plants/MainActivity.java` (WebView + harness hooks) and
+`src/dev/xduo/plants/AssetServer.java` (loopback HTTP server that serves the
 `assets/game/` folder, so the game needs no external storage).
 
 ## Tests
