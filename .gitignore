@@ -1,3 +1,4 @@
 pvz.apk
 *.log
 __pycache__/
+.agents/skills/dev-apk-on-android/
