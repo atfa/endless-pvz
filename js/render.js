@@ -140,6 +140,37 @@
       ctx.restore();
     }
   }
+  /* A frame carries transparent padding, so one fixed offset floats far above
+     small creatures (the raptor frame is only 32×34 before its ×1.9 scale) and
+     sinks into huge ones. Measure the opaque top of every art/animation once and
+     hang the health bar on the visible silhouette instead.                  */
+  var SIL = {};
+  function silhouette(z, s) {
+    var id = z.art + '|' + z.anim, rec = SIL[id];
+    if (rec === undefined) {
+      rec = null;
+      var f = A.frame(z.art, z.anim, 0);
+      if (f && f.img && f.img.naturalWidth) {
+        try {
+          var N = 64, cv = document.createElement('canvas');
+          cv.width = N; cv.height = N;
+          var c2 = cv.getContext('2d');
+          c2.drawImage(f.img, f.sx, f.sy, f.w, f.h, 0, 0, N, N);
+          var px = c2.getImageData(0, 0, N, N).data, top = -1, bot = -1;
+          for (var yy = 0; yy < N; yy++) {
+            var hit = false;
+            for (var xx = 0; xx < N; xx++) if (px[(yy * N + xx) * 4 + 3] > 26) { hit = true; break; }
+            if (hit) { if (top < 0) top = yy; bot = yy; }
+          }
+          if (top >= 0) rec = { top: top / N, bot: (bot + 1) / N };
+        } catch (e) { rec = null; }
+      }
+      if (rec !== null) SIL[id] = rec;
+    }
+    if (!rec) return null;
+    var sz = A.size(z.art, z.anim);
+    return { h: sz.h * (1 - rec.top) * s, w: sz.w * s };
+  }
   function drawZombie(ctx, z) {
     var s = ZOMBIE_SCALE[z.type] || 1;
     var y = z.y + z.yOff - 6;
@@ -164,8 +195,12 @@
       ctx.beginPath(); ctx.ellipse(z.x, y - 55 * s, 30 * s, 60 * s, 0, 0, 6.283); ctx.fill(); ctx.restore();
     }
     var mx = z.x, my = y - (z.big ? 150 : 108) * s;
-    if (z.armor > 0 && z.armorMax > 0) bar(ctx, mx, my, 44 * s, z.armor / z.armorMax, '#9ecbff');
-    if (z.hp < z.maxHp) bar(ctx, mx, my + 7 * s, 44 * s, z.hp / z.maxHp, '#ff6a4a');
+    var sil = silhouette(z, s);
+    var bw = 44 * s;
+    if (sil) { my = y - (sil.h + 10); bw = Math.max(26, Math.min(bw, sil.w * 0.6)); }
+    if (my < 96) my = 96;    /* huge sprites on the top lane: keep the bar on-canvas */
+    if (z.armor > 0 && z.armorMax > 0) bar(ctx, mx, my, bw, z.armor / z.armorMax, '#9ecbff');
+    if (z.hp < z.maxHp) bar(ctx, mx, my + 7, bw, z.hp / z.maxHp, '#ff6a4a');
     if (z.fly) {
       ctx.save(); ctx.font = 'bold 13px system-ui,sans-serif'; ctx.textAlign = 'center';
       ctx.fillStyle = '#8ee6ff'; ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
