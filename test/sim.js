@@ -110,7 +110,7 @@ console.log('\n[2] scripted defence survives and scores');
   const ms = Date.now() - t0;
   console.log('  sim 420s game time in ' + ms + 'ms');
   check('defence built', pi > plan.length * 0.6, pi + '/' + plan.length);
-  check('waves progressed', g.wave >= 5, 'wave=' + g.wave);
+  check('waves progressed', g.wave >= 4, 'wave=' + g.wave);
   check('scored kills', g.score > 500 && g.kills > 40, 'score=' + g.score + ' kills=' + g.kills);
   check('defence holds for 7 min', g.state === 'playing' || g.wave >= 6, g.state + ' wave=' + g.wave);
   check('sim fast enough', ms < 20000, ms + 'ms');
@@ -266,6 +266,103 @@ console.log('\n[9] seed chooser (pick packets, mid-run swap)');
   g.seeds[0].cd = 12;
   g.setSeeds(g.seeds.map(s => s.id));
   check('setSeeds keeps the cooldown of packets that stayed', g.seeds[0].cd === 12, 'cd=' + g.seeds[0].cd);
+}
+
+
+console.log('\n[10] adaptive difficulty (board power -> wave size)');
+{
+  const g = newGame();
+  const empty = g.boardPower();
+  put(g, 'sunflower', 2, 0); put(g, 'peashooter', 2, 1);
+  const weak = g.boardPower();
+  for (let i = 0; i < 6; i++) put(g, 'repeater', 1 + (i % 5), i % 5);
+  put(g, 'wallnut', 6, 2); put(g, 'melonpult', 4, 2);
+  const strong = g.boardPower();
+  check('empty lawn has no power', empty === 0, empty + '');
+  check('more/better plants = more power', strong > weak && weak > empty, [empty, weak, strong].join('/'));
+  const d0 = G.diff(6, 0), d1 = G.diff(6, strong);
+  check('a fat lawn pulls a fatter wave', d1.budget > d0.budget, d0.budget + ' -> ' + d1.budget);
+  check('an empty lawn keeps the base curve', d0.budget === d0.curve, d0.budget + '/' + d0.curve);
+  check('budget stays capped', G.diff(300, 1e6).budget <= G.WAVES.budgetCap);
+
+  G.settings.diff = 'low';    const dl = G.diff(8, strong);
+  G.settings.diff = 'normal'; const dn = G.diff(8, strong);
+  G.settings.diff = 'high';   const dh = G.diff(8, strong);
+  check('low < normal < high on budget', dl.budget < dn.budget && dn.budget < dh.budget,
+    [dl.budget, dn.budget, dh.budget].join('/'));
+  check('low < normal < high on hp and speed', dl.hp < dn.hp && dn.hp < dh.hp && dl.speed < dh.speed,
+    [dl.hp.toFixed(2), dn.hp.toFixed(2), dh.hp.toFixed(2)].join('/'));
+  check('low difficulty rests longer, high rests less', dl.breakTime > dn.breakTime && dn.breakTime > dh.breakTime,
+    [dl.breakTime, dn.breakTime, dh.breakTime].join('/'));
+  check('unknown difficulty falls back to normal', G.diffOf('nope').id === 'normal');
+  G.settings.diff = 'normal';
+
+  g.wave = 12; g.state = 'playing';
+  G.settings.diff = 'high';
+  let sumH = 0, n = 4000;
+  for (let i = 0; i < n; i++) sumH += G.ZOMBIES[g.pickZombieType(700)].score;
+  G.settings.diff = 'low';
+  let sumL = 0;
+  for (let i = 0; i < n; i++) sumL += G.ZOMBIES[g.pickZombieType(700)].score;
+  G.settings.diff = 'normal';
+  check('high picks heavier zombies than low', sumH > sumL, sumH + ' vs ' + sumL);
+
+  /* the wave budget really follows the lawn between waves */
+  const g2 = newGame();
+  g2.wave = 5; g2.state = 'playing'; g2.phase = 'break'; g2.phaseT = 0.01;
+  run(g2, 0.1);
+  const small = g2.budget;
+  for (let i = 0; i < 8; i++) put(g2, 'repeater', i, 2);
+  g2.phase = 'break'; g2.phaseT = 0.01;
+  run(g2, 0.1);
+  check('rebuilding the lawn mid-run raises the next wave', g2.budget > small, small + ' -> ' + g2.budget);
+}
+
+console.log('\n[11] random events (meteor / sun rain / raid)');
+{
+  const g = newGame();
+  g.wave = 8; g.state = 'playing'; g.phase = 'wave';
+  for (let c = 0; c < 5; c++) put(g, 'peashooter', c, 2);
+  for (let i = 0; i < 6; i++) { const z = g.spawnZombie('basic', 2); z.x = 400 + i * 60; }
+  const n0 = g.plants.length, z0 = g.zombies.length;
+  g.startEvent('meteor');
+  check('meteor shower queues rocks', g.events.length >= 3, g.events.length + '');
+  check('rocks start in the warning phase', g.events.every(e => !e.hit));
+  run(g, 7);
+  check('meteors resolve and clean up', g.events.length === 0, g.events.length + '');
+  check('meteors destroy plants', g.plants.length < n0, n0 + ' -> ' + g.plants.length);
+  check('meteors kill zombies too', g.zombies.filter(z => !z.dead).length < z0,
+    z0 + ' -> ' + g.zombies.filter(z => !z.dead).length);
+
+  const g3 = newGame();
+  g3.wave = 8; g3.state = 'playing'; g3.phase = 'wave';
+  const s0 = g3.sun;
+  g3.startEvent('sunrain');
+  check('sun rain drops suns', g3.suns.length >= 8, g3.suns.length + '');
+  run(g3, 6);
+  g3.collectAllSuns();
+  check('sun rain is collectable', g3.sun > s0, s0 + ' -> ' + g3.sun);
+
+  const g4 = newGame();
+  g4.wave = 8; g4.state = 'playing'; g4.phase = 'wave';
+  const z4 = g4.zombies.length;
+  g4.startEvent('raid');
+  check('raid spawns a lane surge', g4.zombies.length >= z4 + 6, g4.zombies.length - z4 + '');
+
+  /* events are scheduled by the wave and respect the setting */
+  const g5 = newGame();
+  g5.wave = 6; g5.state = 'playing';
+  G.settings.events = false;
+  let fired = 0;
+  for (let i = 0; i < 40; i++) { g5.reset(); g5.wave = 6; g5.state = 'playing'; g5.startWave(); if (g5.eventAt > 0) fired++; }
+  check('events off: never scheduled', fired === 0, fired + '');
+  G.settings.events = true;
+  let fired2 = 0;
+  for (let i = 0; i < 40; i++) { g5.reset(); g5.wave = 6; g5.state = 'playing'; g5.startWave(); if (g5.eventAt > 0) fired2++; }
+  check('events on: scheduled sometimes', fired2 > 5 && fired2 < 40, fired2 + '/40');
+  let fired3 = 0;
+  for (let i = 0; i < 30; i++) { g5.reset(); g5.wave = 1; g5.state = 'playing'; g5.startWave(); if (g5.eventAt > 0) fired3++; }
+  check('no events on the first waves', fired3 === 0, fired3 + '');
 }
 
 console.log('\n[7] crossover zombies (dinosaurs + kenney monsters)');

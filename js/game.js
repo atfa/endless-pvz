@@ -13,7 +13,7 @@
 
   Game.prototype.reset = function () {
     this.plants = []; this.zombies = []; this.projectiles = [];
-    this.suns = []; this.effects = []; this.texts = [];
+    this.suns = []; this.effects = []; this.texts = []; this.events = [];
     this.grid = [];
     for (var r = 0; r < GR.rows; r++) { this.grid[r] = []; for (var c = 0; c < GR.cols; c++) this.grid[r][c] = null; }
     this.mowers = [];
@@ -245,20 +245,66 @@
   };
   Game.prototype.pickZombieType = function (budget) {
     var pool = [], tot = 0, w = this.wave;
+    var heavy = G.diffOf(G.settings.diff).heavy;
     for (var id in G.ZOMBIES) {
       var d = G.ZOMBIES[id];
       if (d.unlock > w || !d.weight) continue;
       var cost = d.score;
       if (cost > budget) continue;
-      pool.push([id, d.weight]); tot += d.weight;
+      /* on the harder settings the mix shifts toward the heavy end */
+      var wt = d.weight * (1 + heavy * (cost / 260));
+      pool.push([id, wt]); tot += wt;
     }
     if (!pool.length) return null;
     var r = Math.random() * tot;
     for (var i = 0; i < pool.length; i++) { r -= pool[i][1]; if (r <= 0) return pool[i][0]; }
     return pool[pool.length - 1][0];
   };
+
+  /* ---------------- adaptive difficulty ----------------
+   * Rate the lawn: how much sustained damage, economy and armour the player has
+   * built. G.diff() turns this into the next wave's zombie budget, so a fat lawn
+   * always pulls a fatter wave and an empty lawn is not punished.            */
+  Game.prototype.boardPower = function () {
+    var p = 0;
+    for (var i = 0; i < this.plants.length; i++) {
+      var pl = this.plants[i], d = pl.def;
+      if (pl.dead) continue;
+      if (d.gun) {
+        var shots = (d.gun.shots || 1) * (d.gun.multilane ? 2.6 : 1) *
+          (d.gun.pierce ? 1.6 : 1) * (d.gun.area ? 1.5 : 1) * (d.gun.back ? 1.5 : 1);
+        p += d.gun.dmg * shots / Math.max(0.3, d.gun.rate) * 0.45;
+      }
+      if (d.sun) p += 10 + d.sun.amount / 2.5;
+      if (d.armor) p += d.hp / 60;
+      if (d.mine) p += d.mine.dmg / 45;
+      if (d.bomb) p += d.bomb.dmg / 45;
+      if (d.crush) p += d.crush.dmg / 45;
+      if (d.laneburn) p += d.laneburn.dmg / 40;
+      if (d.freeze) p += d.freeze.dmg / 20 + 12;
+      if (d.spike) p += d.spike.dps * 1.2;
+      if (d.torch) p += 18;
+      p += (d.cost || 0) * 0.02;
+    }
+    return Math.round(p);
+  };
+  /* what the player is about to face, for the break-phase read-out */
+  Game.prototype.waveEstimate = function (wave) {
+    var w = wave || this.wave;
+    var d = G.diff(w, this.boardPower());
+    var tot = 0, sum = 0, heavy = G.diffOf(G.settings.diff).heavy;
+    for (var id in G.ZOMBIES) {
+      var z = G.ZOMBIES[id];
+      if (z.unlock > w || !z.weight) continue;
+      var wt = z.weight * (1 + heavy * (z.score / 260));
+      tot += wt; sum += wt * z.score;
+    }
+    var avg = tot ? Math.max(20, sum / tot) : 100;
+    return { budget: d.budget, count: Math.max(3, Math.round(d.budget / avg)),
+      hp: d.hp, name: d.name, power: this.boardPower() };
+  };
   Game.prototype.startWave = function () {
-    var d = G.diff(this.wave);
+    var d = G.diff(this.wave, this.boardPower());
     this.budget = d.budget;
     this.waveTime = d.time;
     this.waveT = 0;
@@ -269,10 +315,14 @@
     this.bannerMsg(huge ? '一大波僵尸正在接近！' : '第 ' + this.wave + ' 波',
       huge ? 'fx.huge' : null, huge ? 3.4 : 2.2);
     this.sound(huge ? 'hugewave' : 'siren', 0.6, 300);
+    /* schedule a random event in the middle of this wave */
+    this.eventAt = -1;
+    if (G.settings.events && this.wave >= 3 && Math.random() < 0.34 * d.event)
+      this.eventAt = rnd(5, Math.max(9, d.time * 0.6));
   };
   Game.prototype.endWave = function () {
     this.phase = 'break';
-    this.phaseT = WV.breakTime;
+    this.phaseT = G.diff(this.wave, this.boardPower()).breakTime;
     this.wave++;
     var newOnes = [], w = this.wave;
     for (var id in G.PLANTS) {
@@ -289,13 +339,17 @@
     this.sound('win', 0.5, 500);
   };
   Game.prototype.updateWaves = function (dt) {
-    var d = G.diff(this.wave);
+    var d = G.diff(this.wave, this.boardPower());
     if (this.phase === 'break') {
       this.phaseT -= dt;
       if (this.phaseT <= 0) this.startWave();
       return;
     }
     this.waveT += dt;
+    if (this.eventAt > 0) {
+      this.eventAt -= dt;
+      if (this.eventAt <= 0) { this.eventAt = -1; this.rollEvent(); }
+    }
     var huge = this.wave % WV.hugeEvery === 0;
     /* steady spawning while budget remains */
     if (this.budget > 0) {
@@ -330,6 +384,114 @@
     for (var j = 0; j < this.zombies.length; j++) if (!this.zombies[j].dead) alive++;
     var stalled = this.waveT > this.waveTime + 90 && this.budget <= 0;
     if ((this.budget <= 0 && (!huge || this.hugeDone) && alive === 0) || stalled) this.endWave();
+  };
+
+  /* ---------------- random events (突发事件) ----------------
+   * Meteors, sun showers and raids. They hit plants AND zombies, so they are a
+   * threat to a fat lawn and a lifeline when you are being overrun.           */
+  Game.prototype.rollEvent = function () {
+    if (!G.settings.events) return null;
+    var d = G.diff(this.wave, this.boardPower());
+    var pool = ['meteor', 'meteor', 'sunrain'];
+    if (this.wave >= 6) pool.push('raid');
+    return this.startEvent(pool[(Math.random() * pool.length) | 0]);
+  };
+  Game.prototype.startEvent = function (kind) {
+    if (kind === 'meteor') return this.meteorShower();
+    if (kind === 'sunrain') return this.sunRain();
+    if (kind === 'raid') return this.zombieRaid();
+    return null;
+  };
+
+  Game.prototype.meteorTargets = function (n) {
+    var out = [], tries = 0;
+    while (out.length < n && tries < 80) {
+      tries++;
+      var x = rnd(G.LAWN.left + 40, G.LAWN.right - 10), y = rnd(G.LAWN.top + 20, G.LAWN.bottom - 20);
+      /* most rocks aim at something the player owns */
+      if (this.plants.length && Math.random() < 0.65) {
+        var p = this.plants[(Math.random() * this.plants.length) | 0];
+        x = p.x + rnd(-40, 40); y = G.laneY(p.row) + rnd(-24, 24);
+      }
+      var ok = true;
+      for (var i = 0; i < out.length; i++)
+        if (Math.abs(out[i].x - x) < 74 && Math.abs(out[i].y - y) < 62) { ok = false; break; }
+      if (ok) out.push({ x: x, y: y });
+    }
+    return out;
+  };
+  Game.prototype.meteorShower = function () {
+    var n = 3 + Math.min(5, Math.floor(this.wave / 4)) + (Math.random() < 0.4 ? 1 : 0);
+    var t = this.meteorTargets(n);
+    for (var i = 0; i < t.length; i++)
+      this.events.push({ kind: 'meteor', x: t[i].x, y: t[i].y, t: -i * 0.5, warn: 1.5, fall: 0.45,
+        r: GR.cw * (1.05 + Math.random() * 0.3), hit: false, dead: false, seed: Math.random() * 6.28 });
+    this.bannerMsg('☄ 陨石雨！', null, 2.4);
+    this.toast('天降陨石，会砸毁落点内的植物和僵尸！', 3.4);
+    this.sound('siren', 0.7, 140);
+    return 'meteor';
+  };
+  Game.prototype.meteorImpact = function (e) {
+    var r = e.r;
+    this.shake = 0.5; this.flashFire = 0.3;
+    this.sound('explode', 0.9, 0);
+    this.fx('boom', e.x, e.y - 26, 'plant.cherrybomb', 'boom', { ttl: 1.1, scale: 1.5 });
+    this.fx('fire', e.x, e.y - 10, 'fx.fire', 'fire', { ttl: 1.0, scale: 1.4 });
+    this.fx('pop', e.x, e.y, 'fx.crater', 'idle', { ttl: 0.6, scale: 1.1 });
+    /* plants: anything under the rock is gone (bombs go up too) */
+    var killed = 0;
+    for (var i = this.plants.length - 1; i >= 0; i--) {
+      var p = this.plants[i];
+      if (p.dead) continue;
+      if (Math.abs(p.x - e.x) < r && Math.abs(G.laneY(p.row) - e.y) < r * 0.8) {
+        if (p.def.bomb) this.explode(p.x, p.y, p.def.bomb, p);
+        p.dead = true; this.onPlantLost(p); killed++;
+      }
+    }
+    /* zombies: a direct hit is lethal, big ones only lose their armour */
+    var hurt = 0;
+    for (var j = 0; j < this.zombies.length; j++) {
+      var z = this.zombies[j];
+      if (z.dead || z.state === 'die') continue;
+      var dx = z.x - e.x, dy = (G.laneY(z.row) + (z.yOff || 0)) - e.y;
+      if (dx * dx + dy * dy < r * r * 1.25) { z.hurt(2000, this, { pierce: true }); hurt++; }
+    }
+    if (killed + hurt === 0) this.fx('pop', e.x, e.y, 'fx.crater', 'idle', { ttl: 0.5, scale: 0.8 });
+    return { plants: killed, zombies: hurt };
+  };
+
+  Game.prototype.sunRain = function () {
+    var n = 8 + (Math.random() * 6 | 0);
+    for (var i = 0; i < n; i++)
+      this.spawnSun(rnd(G.LAWN.left + 30, G.LAWN.right - 30), -30 - i * 70,
+        rnd(G.LAWN.top + 90, G.LAWN.bottom - 40), G.SUN_VALUE);
+    this.bannerMsg('☀ 阳光雨！', null, 2);
+    this.sound('points', 0.6);
+    return 'sunrain';
+  };
+  Game.prototype.zombieRaid = function () {
+    var row = (Math.random() * GR.rows) | 0, d = G.diff(this.wave, this.boardPower());
+    this.bannerMsg('⚠ 僵尸突袭！', null, 2.2);
+    this.toast('第 ' + (row + 1) + ' 行出现尸潮突袭！', 3);
+    this.sound('siren', 0.7, 220);
+    for (var i = 0; i < 6; i++) {
+      var t = this.pickZombieType(400) || 'basic';
+      var z = this.spawnZombie(t, row, { hpMul: d.hp, speedMul: d.speed * 1.35, wave: this.wave });
+      if (z) z.x = G.SPAWN_X + i * 44;
+    }
+    return 'raid';
+  };
+
+  Game.prototype.updateEvents = function (dt) {
+    for (var i = 0; i < this.events.length; i++) {
+      var e = this.events[i];
+      e.t += dt;
+      if (e.kind === 'meteor') {
+        if (!e.hit && e.t >= e.warn) { e.hit = true; e.at = 0; this.meteorImpact(e); }
+        if (e.t > e.warn + e.fall + 1.1) e.dead = true;
+      }
+    }
+    this.events = this.events.filter(function (e) { return !e.dead; });
   };
 
   /* ---------------- mowers ---------------- */
@@ -367,6 +529,7 @@
     var i;
     for (i = 0; i < this.seeds.length; i++) if (this.seeds[i].cd > 0) this.seeds[i].cd -= dt;
     this.updateWaves(dt);
+    this.updateEvents(dt);
 
     for (i = 0; i < this.plants.length; i++) this.plants[i].update(dt, this);
     this.plants = this.plants.filter(function (p) {
@@ -398,7 +561,7 @@
     this.updateMowers(dt);
 
     /* sky sun */
-    var d = G.diff(this.wave);
+    var d = G.diff(this.wave, this.boardPower());
     this.sunT -= dt;
     if (this.sunT <= 0) {
       this.sunT = d.sunEvery * rnd(0.8, 1.25);

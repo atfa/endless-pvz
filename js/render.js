@@ -16,6 +16,10 @@
   var ZOMBIE_SCALE = { gargantuar: 0.74, zomboni: 0.86, imp: 1.0, balloon: 1.0,
     raptor: 1.9, triceratops: 1.5, ankylosaur: 1.45, sauropod: 1.25, trex: 1.3,
     pterosaur: 1.2, egg: 1.7, bomber: 0.46, beholder: 0.62, imposter: 0.5 };
+  function airCapable(id) {
+    var d = G.PLANTS[id];
+    return !!(d && ((d.gun && d.gun.air) || id === 'starfruit'));
+  }
   var PLANT_TINT = {
     sunflower: '#ffd94a', peashooter: '#5fbf3f', wallnut: '#b5772e', puffshroom: '#9a7fd1',
     potatomine: '#a9743f', cherrybomb: '#e04b3a', snowpea: '#57c8e8', chomper: '#8a4fc0',
@@ -140,7 +144,12 @@
     var s = ZOMBIE_SCALE[z.type] || 1;
     var y = z.y + z.yOff - 6;
     var alpha = z.state === 'die' ? Math.max(0, 1 - z.dieT / 1.25) : 1;
-    if (z.fly) { anim(ctx, 'zombie.balloon', 'fly', z.x, y, z.at, s, 'bc', alpha); }
+    if (z.fly) {
+      /* shadow on the lawn so the height reads */
+      ctx.save(); ctx.globalAlpha = 0.26 * alpha; ctx.fillStyle = '#000';
+      ctx.beginPath(); ctx.ellipse(z.x, z.y + 4, 30 * s, 9 * s, 0, 0, 6.283); ctx.fill(); ctx.restore();
+    }
+    if (z.type === 'balloon') anim(ctx, 'zombie.balloon', 'fly', z.x, y, z.at, s, 'bc', alpha);
     else anim(ctx, z.art, z.anim, z.x, y, z.at, s, 'bc', alpha);
     if (z.freezeT > 0) {
       ctx.save(); ctx.globalAlpha = 0.42; ctx.fillStyle = '#7fd8ff';
@@ -157,6 +166,11 @@
     var mx = z.x, my = y - (z.big ? 150 : 108) * s;
     if (z.armor > 0 && z.armorMax > 0) bar(ctx, mx, my, 44 * s, z.armor / z.armorMax, '#9ecbff');
     if (z.hp < z.maxHp) bar(ctx, mx, my + 7 * s, 44 * s, z.hp / z.maxHp, '#ff6a4a');
+    if (z.fly) {
+      ctx.save(); ctx.font = 'bold 13px system-ui,sans-serif'; ctx.textAlign = 'center';
+      ctx.fillStyle = '#8ee6ff'; ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 4;
+      ctx.fillText('✈ 对空', mx, Math.max(12, my - 18 * s)); ctx.restore();
+    }
   }
   function bar(ctx, x, y, w, f, col) {
     f = Math.max(0, Math.min(1, f));
@@ -241,6 +255,49 @@
     anim(ctx, e.art, e.anim, e.x, e.y, e.at, sc, 'bc', e.alpha);
   }
 
+  /* ---------------- random events ---------------- */
+  function meteorRing(ctx, e, k) {
+    var rx = e.r * (0.5 + 0.5 * k), ry = rx * 0.42;
+    var pulse = 0.5 + 0.5 * Math.sin(e.t * 13 + e.seed);
+    ctx.save();
+    ctx.globalAlpha = 0.18 + 0.3 * k;
+    ctx.fillStyle = '#ff5a2a';
+    ctx.beginPath(); ctx.ellipse(e.x, e.y, rx, ry, 0, 0, 6.283); ctx.fill();
+    ctx.globalAlpha = 0.55 + 0.45 * pulse;
+    ctx.strokeStyle = '#ffd24a'; ctx.lineWidth = 3 + 3 * pulse; ctx.setLineDash([12, 8]);
+    ctx.beginPath(); ctx.ellipse(e.x, e.y, rx, ry, 0, 0, 6.283); ctx.stroke();
+    ctx.restore();
+  }
+  R.drawEventsGround = function (ctx, g) {
+    for (var i = 0; i < g.events.length; i++) {
+      var e = g.events[i];
+      if (e.kind !== 'meteor' || e.hit || e.t < 0) continue;
+      meteorRing(ctx, e, Math.min(1, e.t / e.warn));
+    }
+  };
+  R.drawEventsSky = function (ctx, g) {
+    for (var i = 0; i < g.events.length; i++) {
+      var e = g.events[i];
+      if (e.kind !== 'meteor' || e.hit || e.t < 0) continue;
+      var k = Math.min(1, e.t / e.warn);
+      var y = -170 + (e.y + 170) * k * k, x = e.x + (1 - k) * 210;
+      var r = 20 + 14 * k;
+      ctx.save();
+      var gr = ctx.createLinearGradient(x - r * 3.4, y - r * 3.4, x, y);
+      gr.addColorStop(0, 'rgba(255,190,60,0)');
+      gr.addColorStop(1, 'rgba(255,140,40,0.8)');
+      ctx.strokeStyle = gr; ctx.lineWidth = r * 1.15; ctx.lineCap = 'round';
+      ctx.beginPath(); ctx.moveTo(x - r * 3.4, y - r * 3.4); ctx.lineTo(x, y); ctx.stroke();
+      ctx.fillStyle = '#4a3226';
+      ctx.beginPath(); ctx.arc(x, y, r, 0, 6.283); ctx.fill();
+      ctx.fillStyle = '#ff8a2a';
+      ctx.beginPath(); ctx.arc(x + r * 0.28, y + r * 0.24, r * 0.74, 0, 6.283); ctx.fill();
+      ctx.fillStyle = '#ffe08a';
+      ctx.beginPath(); ctx.arc(x + r * 0.38, y + r * 0.34, r * 0.4, 0, 6.283); ctx.fill();
+      ctx.restore();
+    }
+  };
+
   /* ---------------- HUD ---------------- */
   var SEED_W = 74, SEED_H = 92, SEED_Y = 8, SEED_X = 128, SEED_GAP = 6;
   R.seedRect = function (i) { return { x: SEED_X + i * (SEED_W + SEED_GAP), y: SEED_Y, w: SEED_W, h: SEED_H }; };
@@ -282,6 +339,12 @@
       ctx.fillStyle = afford ? '#2b2b18' : '#8a8a7a';
       ctx.font = 'bold 16px system-ui,sans-serif'; ctx.textAlign = 'center';
       ctx.fillText(String(d.cost), rc.x + rc.w / 2, rc.y + rc.h - 12);
+      if (airCapable(s.id)) {
+        ctx.fillStyle = '#1273a8';
+        roundRect(ctx, rc.x + 3, rc.y + 3, 40, 17, 5); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px system-ui,sans-serif';
+        ctx.fillText('✈ 对空', rc.x + 23, rc.y + 16);
+      }
       ctx.restore();
       if (s.cd > 0) {
         ctx.save();
@@ -311,27 +374,31 @@
     ctx.font = 'bold 26px system-ui,sans-serif';
     ctx.fillStyle = '#ffe066';
     ctx.shadowColor = 'rgba(0,0,0,0.8)'; ctx.shadowBlur = 6;
-    ctx.fillText('第 ' + g.wave + ' 波', G.W - 18, 12);
+    var D = G.diffOf(G.settings.diff), RM = 212;
+    ctx.fillText('第 ' + g.wave + ' 波 · ' + D.name + '难度', G.W - RM, 12);
     ctx.font = 'bold 20px system-ui,sans-serif'; ctx.fillStyle = '#fff';
-    ctx.fillText('得分 ' + g.score, G.W - 18, 44);
+    ctx.fillText('得分 ' + g.score, G.W - RM, 44);
     ctx.font = '14px system-ui,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.75)';
-    ctx.fillText('击杀 ' + g.kills + ' · 最高 ' + g.best, G.W - 18, 70);
+    ctx.fillText('击杀 ' + g.kills + ' · 最高 ' + g.best, G.W - RM, 70);
     ctx.restore();
 
     /* wave progress */
     if (g.phase === 'wave') {
-      var d = G.diff(g.wave), f = 1 - Math.max(0, g.budget) / d.budget;
+      var d = G.diff(g.wave, g.boardPower()), f = 1 - Math.max(0, g.budget) / d.budget;
       ctx.save();
       ctx.fillStyle = 'rgba(0,0,0,0.45)';
-      roundRect(ctx, G.W - 218, 92, 200, 12, 6); ctx.fill();
+      roundRect(ctx, G.W - 368, 92, 200, 12, 6); ctx.fill();
       ctx.fillStyle = '#8ee06a';
-      roundRect(ctx, G.W - 218, 92, 200 * Math.max(0.02, Math.min(1, f)), 12, 6); ctx.fill();
+      roundRect(ctx, G.W - 368, 92, 200 * Math.max(0.02, Math.min(1, f)), 12, 6); ctx.fill();
       ctx.restore();
     } else {
+      var est = g.waveEstimate(g.wave);
       ctx.save();
       ctx.textAlign = 'right'; ctx.font = 'bold 16px system-ui,sans-serif'; ctx.fillStyle = '#bff0a0';
       ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 4;
-      ctx.fillText('下一波 ' + Math.ceil(g.phaseT) + 's', G.W - 18, 96);
+      ctx.fillText('下一波 ' + Math.ceil(g.phaseT) + 's · 约 ' + est.count + ' 只', G.W - RM, 96);
+      ctx.font = '13px system-ui,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
+      ctx.fillText('布局强度 ' + est.power + ' → 威胁 ' + est.budget, G.W - RM, 116);
       ctx.restore();
     }
   }
@@ -443,11 +510,13 @@
       }
     }
     var r, j;
+    R.drawEventsGround(ctx, g);
     for (i = 0; i < g.plants.length; i++) drawPlant(ctx, g.plants[i]);
     for (i = 0; i < g.effects.length; i++) if (g.effects[i].kind === 'fire') drawEffect(ctx, g.effects[i]);
     var zs = g.zombies.slice().sort(function (a, b) { return a.row - b.row; });
     for (i = 0; i < zs.length; i++) drawZombie(ctx, zs[i]);
     for (i = 0; i < g.projectiles.length; i++) drawProjectile(ctx, g.projectiles[i]);
+    R.drawEventsSky(ctx, g);
     for (i = 0; i < g.effects.length; i++) if (g.effects[i].kind !== 'fire') drawEffect(ctx, g.effects[i]);
     for (i = 0; i < g.suns.length; i++) drawSun(ctx, g.suns[i]);
     drawTexts(ctx, g);

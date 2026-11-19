@@ -123,13 +123,13 @@ window.PvZ = window.PvZ || {};
     triceratops: { name: '三角龙', art: 'zombie.triceratops', hp: 300, armorHp: 260, speed: 1.25, score: 45,
       unlock: 9, weight: 26, crush: true, smash: 900 },
     pterosaur: { name: '翼龙', art: 'zombie.pterosaur', hp: 220, speed: 1.35, score: 38, unlock: 10, weight: 22,
-      fly: true },
+      fly: true, flyHeight: -54 },
     imposter: { name: '内鬼', art: 'zombie.imposter', hp: 220, speed: 1.7, score: 35, unlock: 11, weight: 26,
       vault: true },
     ankylosaur: { name: '甲龙', art: 'zombie.ankylosaur', hp: 320, armorHp: 900, speed: 0.62, score: 60,
       unlock: 12, weight: 20 },
     beholder: { name: '大眼怪', art: 'zombie.beholder', hp: 300, speed: 1.0, score: 50, unlock: 14, weight: 16,
-      fly: true },
+      fly: true, flyHeight: -50 },
     sauropod: { name: '雷龙', art: 'zombie.sauropod', hp: 1500, speed: 0.45, score: 120, unlock: 16, weight: 12,
       big: true, throw: 'raptor' },
     trex: { name: '霸王龙', art: 'zombie.trex', hp: 2600, speed: 0.6, score: 220, unlock: 20, weight: 9,
@@ -150,7 +150,8 @@ window.PvZ = window.PvZ || {};
     breakTime: 11,
     hugeEvery: 5,
     sunInterval: [8, 6],   // start / min seconds between sky suns
-    maxSeeds: 8
+    maxSeeds: 8,
+    powerK: 1.0            // board power -> zombie budget conversion
   };
   G.SUN_VALUE = 25;
   G.START_SUN = 100;
@@ -159,16 +160,44 @@ window.PvZ = window.PvZ || {};
   G.plantArt = function (id) { return 'plant.' + id; };
   G.plantName = function (id) { return (G.PLANTS[id] || {}).name || id; };
 
-  /* difficulty multipliers for a wave (1-based) */
-  G.diff = function (wave) {
-    var w = Math.max(1, wave) - 1;
+  /* ---------------- difficulty presets ----------------
+   * budget  : multiplier on the adaptive zombie-point budget
+   * hp/speed: multipliers on zombie stats
+   * pace    : wave length multiplier (lower = more pressure)
+   * rest    : break time multiplier before the next wave
+   * event   : chance multiplier for 突发事件
+   * heavy   : bias toward heavy zombies (0..1)                                     */
+  G.DIFFS = [
+    { id: 'low', name: '低', icon: '🌱', budget: 0.7, hp: 0.82, speed: 0.9, pace: 1.15, rest: 1.4, event: 0.35, heavy: 0, sun: 1.25,
+      desc: '尸潮稀疏、僵尸偏脆，休整更长，天灾少见' },
+    { id: 'normal', name: '中', icon: '⚔', budget: 1, hp: 1, speed: 1, pace: 1, rest: 1, event: 1, heavy: 0.15, sun: 1,
+      desc: '标准无尽节奏，尸潮随你的布局水涨船高' },
+    { id: 'high', name: '高', icon: '💀', budget: 1.45, hp: 1.3, speed: 1.14, pace: 0.8, rest: 0.7, event: 1.7, heavy: 0.4, sun: 0.9,
+      desc: '尸潮汹涌、重甲成堆、天灾频发，休整很短' }
+  ];
+  G.diffOf = function (id) {
+    for (var i = 0; i < G.DIFFS.length; i++) if (G.DIFFS[i].id === id) return G.DIFFS[i];
+    return G.DIFFS[1];
+  };
+  /* runtime settings, persisted by main.js in localStorage */
+  G.settings = { diff: 'normal', events: true, sound: true };
+
+  /* difficulty for a wave (1-based). `power` is the player's board strength: the
+   * wave is sized from it so a fat lawn always gets a fatter wave. */
+  G.diff = function (wave, power) {
+    var w = Math.max(1, wave) - 1, D = G.diffOf(G.settings.diff);
+    var curve = Math.round(G.WAVES.baseBudget * Math.pow(G.WAVES.budgetGrowth, w));
+    var adaptive = Math.round((G.WAVES.baseBudget - 10 + (power || 0) * G.WAVES.powerK) * D.budget);
     return {
-      hp: Math.min(G.WAVES.hpCap, 1 + G.WAVES.hpGrowth * w),
-      speed: Math.min(G.WAVES.speedCap, 1 + G.WAVES.speedGrowth * w),
-      budget: Math.min(G.WAVES.budgetCap,
-        Math.round(G.WAVES.baseBudget * Math.pow(G.WAVES.budgetGrowth, w))),
-      time: Math.max(G.WAVES.minTime, G.WAVES.baseTime - Math.min(14, w * 0.6)),
-      sunEvery: Math.max(G.WAVES.sunInterval[1], G.WAVES.sunInterval[0] - w * 0.18)
+      id: D.id, name: D.name, heavy: D.heavy, event: D.event, sun: D.sun,
+      hp: Math.min(G.WAVES.hpCap, 1 + G.WAVES.hpGrowth * w) * D.hp,
+      speed: Math.min(G.WAVES.speedCap, (1 + G.WAVES.speedGrowth * w) * D.speed),
+      budget: Math.min(G.WAVES.budgetCap, Math.max(curve, adaptive)),
+      curve: curve, adaptive: adaptive,
+      time: Math.max(G.WAVES.minTime, (G.WAVES.baseTime - Math.min(14, w * 0.6)) * D.pace),
+      breakTime: G.WAVES.breakTime * D.rest,
+      sunEvery: Math.max(G.WAVES.sunInterval[1], G.WAVES.sunInterval[0] - w * 0.18) / D.sun
     };
   };
+
 })(window.PvZ);

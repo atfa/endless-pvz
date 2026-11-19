@@ -218,7 +218,7 @@
     this.baseSpeed = d.speed * G.SPEED * this.speedMul;
     this.state = 'walk'; this.anim = 'walk'; this.at = Math.random() * 2;
     this.slowT = 0; this.slow = 1; this.freezeT = 0; this.dieT = 0;
-    this.dead = false; this.fly = !!d.fly; this.yOff = this.fly ? -78 : 0;
+    this.dead = false; this.fly = !!d.fly; this.yOff = this.fly ? (d.flyHeight || -78) : 0;
     this.big = !!d.big; this.eating = null; this.flash = 0;
     this.summonT = d.summon ? 3.5 : 0; this.thrown = !d.throw; this.smashT = 0;
     this.jumpT = 0; this.enraged = false; this.spawnWave = opts.wave || 1;

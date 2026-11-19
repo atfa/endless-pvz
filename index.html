@@ -14,6 +14,7 @@
 
   <div id=hud>
     <button id=btn-seeds title="更换出战植物">🌱</button>
+    <button id=btn-settings title="设置">⚙</button>
     <button id=btn-pause>⏸</button>
     <button id=btn-sound>🔊</button>
     <button id=btn-full>⛶</button>
@@ -35,6 +36,7 @@
       <p>· 点击太阳图标收集阳光</p>
       <p>· 用铲子移除植物；僵尸进屋即失败</p>
       <p>· 解锁新植物后，点左上角 🌱 随时更换出战卡片</p>
+      <p>· 点 ⚙ 可选低 / 中 / 高难度，高难度尸潮更凶、天灾更多</p>
     </div>
   </div>
 
@@ -49,6 +51,14 @@
     <div class=title>已暂停</div>
     <button id=btn-resume class=big>继续</button>
     <button id=btn-quit>回主菜单</button>
+  </div>
+
+  <div id=settings class=hidden>
+    <div class=title>设置</div>
+    <div class=sub>难度决定尸潮规模、僵尸强度与突发事件频率，随时可改</div>
+    <div id=diffrow></div>
+    <label class=opt><input type=checkbox id=chk-events> 突发事件（☄ 陨石雨 / ☀ 阳光雨 / 尸潮突袭）</label>
+    <button id=btn-settings-close class=big>完成</button>
   </div>
 
   <div id=rotate class=hidden>

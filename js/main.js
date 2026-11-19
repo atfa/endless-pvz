@@ -52,6 +52,47 @@
     else if (!on && game.state === 'paused') { game.state = 'playing'; show('pause', false); G.Sound.music('theme'); }
   }
 
+  /* ---------------- settings (difficulty, events) ---------------- */
+  function loadSettings() {
+    try {
+      var s = JSON.parse(localStorage.getItem('pvz.settings') || '{}');
+      if (s.diff) G.settings.diff = s.diff;
+      if (typeof s.events === 'boolean') G.settings.events = s.events;
+      if (typeof s.sound === 'boolean') soundOn = s.sound;
+    } catch (e) { }
+  }
+  function saveSettings() {
+    try { localStorage.setItem('pvz.settings', JSON.stringify(G.settings)); } catch (e) { }
+  }
+  var settingsFrom = false;
+  function renderSettings() {
+    var row = $('diffrow');
+    row.innerHTML = '';
+    for (var i = 0; i < G.DIFFS.length; i++) {
+      var d = G.DIFFS[i];
+      var b = document.createElement('button');
+      b.className = 'diff-btn' + (G.settings.diff === d.id ? ' on' : '');
+      b.innerHTML = '<span class=ic>' + d.icon + '</span><span class=nm>' + d.name + '难度</span>' +
+        '<span class=ds>' + d.desc + '</span>';
+      b.onclick = function () { G.settings.diff = d.id; saveSettings(); renderSettings(); G.Sound.play('click', 0.4); };
+      row.appendChild(b);
+    }
+    $('chk-events').checked = !!G.settings.events;
+  }
+  function openSettings() {
+    if (game.state === 'playing') setPaused(true);
+    settingsFrom = game.state === 'paused';
+    show('pause', false);
+    renderSettings();
+    show('settings', true);
+    G.Sound.play('click', 0.4);
+  }
+  function closeSettings() {
+    show('settings', false);
+    if (settingsFrom) setPaused(false);
+    settingsFrom = false;
+  }
+
   /* ---- harness hooks (used by the Android activity: am start --es js "...") ---- */
   function jslog(m) { try { if (window.android && window.android.log) window.android.log(m); } catch (e) { } }
 
@@ -99,6 +140,8 @@
     canvas = $('game'); ctx = canvas.getContext('2d');
     game = new G.Game();
     G.game = game;
+    loadSettings();
+    G.Sound.setEnabled(soundOn);
     try { game.best = parseInt(localStorage.getItem('pvz.best') || '0', 10) || 0; } catch (e) {}
     G.Input(canvas, game);
 
@@ -120,8 +163,7 @@
       game.state = 'menu'; show('pause', false); show('start', true);
       $('bestscore').textContent = game.best ? '最高分：' + game.best : '';
       G.Sound.stopMusic();
-    };
-    $('btn-pause').onclick = function () {
+    };    $('btn-pause').onclick = function () {
       if (game.state === 'playing') setPaused(true); else if (game.state === 'paused') setPaused(false);
     };
     $('btn-seeds').onclick = function () {
@@ -129,8 +171,16 @@
       if (!game.openChooser(true)) return;
       G.Sound.play('click', 0.5);
     };
+    $('btn-settings').onclick = function () {
+      if (!$('settings').classList.contains('hidden')) closeSettings(); else openSettings();
+    };
+    $('btn-settings-close').onclick = closeSettings;
+    $('chk-events').onchange = function () {
+      G.settings.events = this.checked; saveSettings();
+    };
     $('btn-sound').onclick = function () {
       soundOn = !soundOn; G.Sound.setEnabled(soundOn);
+      G.settings.sound = soundOn; saveSettings();
       this.textContent = soundOn ? '🔊' : '🔇';
       if (soundOn && game.state === 'playing') G.Sound.music('theme');
     };
