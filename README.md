@@ -32,6 +32,33 @@ You fight with **8 seed packets**, and you pick them yourself:
 * Packets that stay in the load-out keep their cooldown, so swapping is not a cooldown-wipe exploit.
 * Desktop shortcut: **S** opens/closes the chooser, **space** collects sun, **P** pauses.
 
+## Difficulty (自适应难度)
+
+Tap **⚙** (top right) any time. Three presets — 低 / 中 / 高 — scale the zombie budget, HP, speed,
+rest time between waves, event frequency and sun income. The choice is saved (`localStorage pvz.settings`)
+and can be changed mid-run.
+
+On top of the preset the wave size is **adaptive**: `Game.boardPower()` scores your lawn
+(gun dps, sun output, walls, mines, area damage…) and the next wave's budget is
+`max(base curve, 10 + power × powerK) × preset.budget`. An empty lawn keeps the gentle base curve,
+a fat lawn pulls a fatter wave — the HUD shows `布局强度 X → 威胁 Y` during the break so you can see it.
+
+## Random events (突发事件)
+
+During a wave the game can roll one of three events (toggle in ⚙, never before wave 3):
+
+* **☄ 陨石雨** — a shower of meteors. Dashed rings mark the impact spots for 1.5 s (65 % of them aimed at
+  your plants), then each rock kills plants in its blast and deals 2000 pierce damage to zombies.
+* **☀ 阳光雨** — 8–13 suns rain onto the lawn.
+* **🧟 尸潮突袭** — 6 zombies surge down a single lane at 1.35× speed.
+
+## Flying zombies (对空)
+
+气球僵尸 / 翼龙 / 大眼怪 fly (`fly: true`): ordinary shooters cannot hit them at all — only
+**仙人掌** and **杨桃** (air-capable, badged **✈ 对空** on their packet) and splash/AoE
+(西瓜、冰西瓜、大喷菇、樱桃炸弹、陨石) can. A toast explains it the first time one appears,
+and flyers get a ground shadow plus a ✈ label.
+
 ## Layout
 
 ```
