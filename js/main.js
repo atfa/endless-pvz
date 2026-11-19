@@ -74,7 +74,11 @@
       b.className = 'diff-btn' + (G.settings.diff === d.id ? ' on' : '');
       b.innerHTML = '<span class=ic>' + d.icon + '</span><span class=nm>' + d.name + '难度</span>' +
         '<span class=ds>' + d.desc + '</span>';
-      b.onclick = function () { G.settings.diff = d.id; saveSettings(); renderSettings(); G.Sound.play('click', 0.4); };
+      b.onclick = function () {
+        G.settings.diff = d.id; saveSettings(); renderSettings();
+        if (game.applyDifficulty) game.applyDifficulty();   /* takes effect NOW */
+        G.Sound.play('click', 0.4);
+      };
       row.appendChild(b);
     }
     $('chk-events').checked = !!G.settings.events;
@@ -177,6 +181,7 @@
     $('btn-settings-close').onclick = closeSettings;
     $('chk-events').onchange = function () {
       G.settings.events = this.checked; saveSettings();
+      if (!this.checked) game.eventAt = -1;   /* cancel a pending event immediately too */
     };
     $('btn-sound').onclick = function () {
       soundOn = !soundOn; G.Sound.setEnabled(soundOn);

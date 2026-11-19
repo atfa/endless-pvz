@@ -182,11 +182,18 @@ window.PvZ = window.PvZ || {};
   /* runtime settings, persisted by main.js in localStorage */
   G.settings = { diff: 'normal', events: true, sound: true };
 
+  /* a strong lawn makes zombies tougher, not just more numerous.
+   * ~300 power (a couple of packed rows) = +20 % hp, capped at +70 %.
+   * The floor of 1 keeps early waves fair.                          */
+  G.zombiePowerHp = function (power) {
+    return Math.min(1.7, 1 + Math.max(0, power || 0) / 1500);
+  };
+
   /* difficulty for a wave (1-based). `power` is the player's board strength: the
    * wave is sized from it so a fat lawn always gets a fatter wave. */
   G.diff = function (wave, power) {
     var w = Math.max(1, wave) - 1, D = G.diffOf(G.settings.diff);
-    var curve = Math.round(G.WAVES.baseBudget * Math.pow(G.WAVES.budgetGrowth, w));
+    var curve = Math.round(G.WAVES.baseBudget * Math.pow(G.WAVES.budgetGrowth, w) * D.budget);
     var adaptive = Math.round((G.WAVES.baseBudget - 10 + (power || 0) * G.WAVES.powerK) * D.budget);
     return {
       id: D.id, name: D.name, heavy: D.heavy, event: D.event, sun: D.sun,

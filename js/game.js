@@ -22,6 +22,7 @@
     this.score = 0; this.kills = 0;
     this.wave = 1; this.waveT = 0; this.phase = 'break'; this.phaseT = 10;
     this.budget = 0; this.spawnT = 0; this.hugeDone = false;
+    this.eventAt = -1;
     this.sunT = 4;
     this.time = 0;
     this.selected = -1; this.shovel = false;
@@ -209,7 +210,7 @@
     this.fx('pop', p.x, p.y - 20, 'fx.crater', 'idle', { ttl: 0.5 });
   };
   Game.prototype.throwImp = function (z) {
-    var imp = new G.Zombie(this, z.def.throw || 'imp', z.row, z.x - 60, { hpMul: z.hpMul, speedMul: z.speedMul, wave: this.wave });
+    var imp = new G.Zombie(this, z.def.throw || 'imp', z.row, z.x - 60, { hpMul: z.hpMul / (z.powerHp || 1), speedMul: z.speedMul, wave: this.wave });
     imp.state = 'walk';
     this.zombies.push(imp);
     this.fx('pop', z.x - 40, z.y - 120, 'zombie.imp', 'walk', { ttl: 0.6 });
@@ -218,7 +219,7 @@
     this.sound('hugewave', 0.4, 500);
     for (var i = 0; i < (z.def.summonCount || 4); i++) {
       var b = new G.Zombie(this, z.def.summon, z.row, z.x + 40 + i * 34,
-        { hpMul: z.hpMul, speedMul: z.speedMul, wave: this.wave });
+        { hpMul: z.hpMul / (z.powerHp || 1), speedMul: z.speedMul, wave: this.wave });
       this.zombies.push(b);
     }
     z.anim = 'summon'; z.at = 0;
@@ -301,10 +302,43 @@
     }
     var avg = tot ? Math.max(20, sum / tot) : 100;
     return { budget: d.budget, count: Math.max(3, Math.round(d.budget / avg)),
-      hp: d.hp, name: d.name, power: this.boardPower() };
+      hp: d.hp, hpMul: d.hp * G.zombiePowerHp(this.boardPower()),
+      name: d.name, power: this.boardPower() };
+  };
+  /* Re-price the CURRENT wave when the player flips the difficulty mid-run.
+   * Existing zombies get their HP/speed rescaled in place (keeping the damage
+   * they have already taken), future spawns and the pending budget follow the
+   * new preset, so the change is felt immediately — not next wave.           */
+  Game.prototype.applyDifficulty = function () {
+    var d = G.diff(this.wave, this.boardPower()), old = this.diffState;
+    this.diffState = d;
+    if (this.state !== 'playing' && this.state !== 'paused') return d;
+    if (this.phase === 'break') this.phaseT = d.breakTime;
+    else {
+      var ratio = old && old.time ? d.time / old.time : 1;
+      this.waveTime = Math.max(8, this.waveTime * ratio);
+      this.budget = Math.round(this.budget * d.budget / (old ? old.budget : d.budget));
+    }
+    for (var i = 0; i < this.zombies.length; i++) {
+      var z = this.zombies[i];
+      if (z.dead || z.state === 'die') continue;
+      var frac = z.maxHp ? z.hp / z.maxHp : 1;
+      var powerHp = z.powerHp || 1;
+      z.hpMul = d.hp * powerHp;
+      z.maxHp = z.def.hp * z.hpMul;
+      z.hp = Math.max(1, z.maxHp * frac);
+      z.armorMax = (z.def.armorHp || 0) * z.hpMul;
+      z.armor = Math.min(z.armor, z.armorMax);
+      z.speedMul = d.speed;
+      z.baseSpeed = z.def.speed * G.SPEED * z.speedMul * (z.speedScale || 1);
+      if (z.enraged) z.baseSpeed *= 2.1;
+    }
+    this.toast('难度已切换：' + d.name + ' · 威胁 ' + d.budget, 2.4);
+    return d;
   };
   Game.prototype.startWave = function () {
     var d = G.diff(this.wave, this.boardPower());
+    this.diffState = d;
     this.budget = d.budget;
     this.waveTime = d.time;
     this.waveT = 0;
@@ -317,8 +351,8 @@
     this.sound(huge ? 'hugewave' : 'siren', 0.6, 300);
     /* schedule a random event in the middle of this wave */
     this.eventAt = -1;
-    if (G.settings.events && this.wave >= 3 && Math.random() < 0.34 * d.event)
-      this.eventAt = rnd(5, Math.max(9, d.time * 0.6));
+    if (G.settings.events && this.wave >= 3 && Math.random() < Math.min(0.82, 0.58 * d.event))
+      this.eventAt = rnd(4, Math.max(8, d.time * 0.5));
   };
   Game.prototype.endWave = function () {
     this.phase = 'break';
@@ -392,8 +426,9 @@
   Game.prototype.rollEvent = function () {
     if (!G.settings.events) return null;
     var d = G.diff(this.wave, this.boardPower());
-    var pool = ['meteor', 'meteor', 'sunrain'];
+    var pool = ['meteor', 'meteor', 'meteor', 'sunrain', 'sunrain'];
     if (this.wave >= 6) pool.push('raid');
+    if (this.wave >= 9) pool.push('meteor');   /* late waves lean a little rocky */
     return this.startEvent(pool[(Math.random() * pool.length) | 0]);
   };
   Game.prototype.startEvent = function (kind) {
@@ -476,7 +511,7 @@
     this.sound('siren', 0.7, 220);
     for (var i = 0; i < 6; i++) {
       var t = this.pickZombieType(400) || 'basic';
-      var z = this.spawnZombie(t, row, { hpMul: d.hp, speedMul: d.speed * 1.35, wave: this.wave });
+      var z = this.spawnZombie(t, row, { hpMul: d.hp, speedMul: d.speed, speedScale: 1.35, wave: this.wave });
       if (z) z.x = G.SPAWN_X + i * 44;
     }
     return 'raid';

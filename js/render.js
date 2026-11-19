@@ -398,7 +398,7 @@
       ctx.shadowColor = 'rgba(0,0,0,0.7)'; ctx.shadowBlur = 4;
       ctx.fillText('下一波 ' + Math.ceil(g.phaseT) + 's · 约 ' + est.count + ' 只', G.W - RM, 96);
       ctx.font = '13px system-ui,sans-serif'; ctx.fillStyle = 'rgba(255,255,255,0.7)';
-      ctx.fillText('布局强度 ' + est.power + ' → 威胁 ' + est.budget, G.W - RM, 116);
+      ctx.fillText('布局强度 ' + est.power + ' → 威胁 ' + est.budget + ' · 血量 ×' + est.hpMul.toFixed(2), G.W - RM, 116);
       ctx.restore();
     }
   }

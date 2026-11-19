@@ -212,10 +212,17 @@
     var d = G.ZOMBIES[type];
     this.type = type; this.def = d; this.art = d.art;
     this.row = row; this.x = x; this.y = G.laneBase(row);
-    this.hpMul = opts.hpMul || 1; this.speedMul = opts.speedMul || 1;
+    this.hpMul = opts.hpMul || 1;
+    this.speedMul = opts.speedMul || 1;
+    this.speedScale = opts.speedScale || 1;   /* raid / event boost, survives difficulty swaps */
+    /* rate the live lawn again at spawn time: a zombie walking into a fortified
+       board is beefier than the same type walking into an empty one            */
+    var powerHp = G.zombiePowerHp(game ? game.boardPower() : 0);
+    this.powerHp = powerHp;
+    this.hpMul *= powerHp;
     this.maxHp = d.hp * this.hpMul; this.hp = this.maxHp;
     this.armorMax = (d.armorHp || 0) * this.hpMul; this.armor = this.armorMax;
-    this.baseSpeed = d.speed * G.SPEED * this.speedMul;
+    this.baseSpeed = d.speed * G.SPEED * this.speedMul * this.speedScale;
     this.state = 'walk'; this.anim = 'walk'; this.at = Math.random() * 2;
     this.slowT = 0; this.slow = 1; this.freezeT = 0; this.dieT = 0;
     this.dead = false; this.fly = !!d.fly; this.yOff = this.fly ? (d.flyHeight || -78) : 0;
@@ -434,6 +441,7 @@
       var tw = g.torchAt(G.colAt(this.x), this.row);
       if (tw && this.torch !== tw) {
         this.torch = tw; this.type = 'fire'; this.dmg *= 2; this.art = 'fx.pea';
+        this.slow = 0;    /* torchwood turns the ice pea into plain fire: no chill */
         g.sound('jalapeno', 0.18, 120);
       }
     }
@@ -448,7 +456,7 @@
       if (this.hits.indexOf(z) >= 0) continue;
       this.hits.push(z);
       z.hurt(this.dmg, g, { pierce: this.pierce, air: this.air, front: this.dir > 0 });
-      if (this.slow) { z.slowT = this.slowTime || 4; z.slow = this.slow; }
+      if (this.slow && !z.dead) { z.slowT = this.slowTime || 4; z.slow = this.slow; z.freezeT = 0; }
       if (this.type === 'fire') z.burn = 1;
       g.fx('hit', this.x, this.y, 'fx.peahit', 'idle');
       if (this.pierceN && this.hits.length >= this.pierceN) {
@@ -468,7 +476,7 @@
       if (Math.abs(z.row - this.row) > ar) continue;
       if (Math.abs(z.x - this.x) > R) continue;
       z.hurt(this.dmg, g, { pierce: true, front: true });
-      if (this.slow) { z.slowT = this.slowTime || 4; z.slow = this.slow; }
+      if (this.slow && !z.dead) { z.slowT = this.slowTime || 4; z.slow = this.slow; }
     }
     g.fx('hit', this.x, this.y, 'fx.peahit', 'idle');
     if (this.splash) g.fx('boom', this.x, this.y, 'fx.peahit', 'idle', { ttl: 0.35 });

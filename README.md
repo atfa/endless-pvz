@@ -50,14 +50,26 @@ and can be changed mid-run.
 On top of the preset the wave size is **adaptive**: `Game.boardPower()` scores your lawn
 (gun dps, sun output, walls, mines, area damage…) and the next wave's budget is
 `max(base curve, 10 + power × powerK) × preset.budget`. An empty lawn keeps the gentle base curve,
-a fat lawn pulls a fatter wave — the HUD shows `布局强度 X → 威胁 Y` during the break so you can see it.
+a fat lawn pulls a fatter wave — the HUD shows `布局强度 X → 威胁 Y · 血量 ×Z` during the break so you can see it.
+
+**Zombie HP also follows your lawn.** Every zombie is re-rated when it spawns:
+`hp = def.hp × waveHp × presetHp × G.zombiePowerHp(boardPower)` where the lawn bonus goes from
+1.00 (empty) up to ×1.70 (≈1000 power), so a fortress lawn faces genuinely longer health bars
+instead of just more bodies.
+
+**Switching difficulty takes effect immediately**, even mid-wave: `Game.applyDifficulty()` rescales the
+living zombies' HP (keeping the damage they already took) and speed, re-prices the remaining wave
+budget and re-times the current wave — no need to wait for the next wave.
 
 ## Random events (突发事件)
 
-During a wave the game can roll one of three events (toggle in ⚙, never before wave 3):
+During a wave the game can roll an event (toggle in ⚙, never before wave 3). Roughly 58 % of waves
+schedule one, so there is usually something happening, and **meteors are the headline act**:
+33–60 % of all events are meteor showers, followed by sun rain, and (from wave 6) zombie raids.
 
-* **☄ 陨石雨** — a shower of meteors. Dashed rings mark the impact spots for 1.5 s (65 % of them aimed at
-  your plants), then each rock kills plants in its blast and deals 2000 pierce damage to zombies.
+* **☄ 陨石雨** — the most frequent event. A shower of meteors. Dashed rings mark the impact spots for
+  1.5 s (65 % of them aimed at your plants), then each rock kills plants in its blast and deals
+  2000 pierce damage to zombies.
 * **☀ 阳光雨** — 8–13 suns rain onto the lawn.
 * **🧟 尸潮突袭** — 6 zombies surge down a single lane at 1.35× speed.
 
@@ -67,6 +79,13 @@ During a wave the game can roll one of three events (toggle in ⚙, never before
 **仙人掌** and **杨桃** (air-capable, badged **✈ 对空** on their packet) and splash/AoE
 (西瓜、冰西瓜、大喷菇、樱桃炸弹、陨石) can. A toast explains it the first time one appears,
 and flyers get a ground shadow plus a ✈ label.
+
+## Ice peas (冰冻减速)
+
+**寒冰射手 / 冰西瓜** carry `gun.slow = 0.5` + `slowTime`, so every hit halves the target's speed for
+5 s (`Zombie.speed()`) and tints it blue. Re-hitting refreshes the timer; 冰冻菇 still hard-freezes.
+A snow pea that passes through 火炬树 is converted to fire and **loses** the chill (`p.slow = 0`),
+so the two plants don't accidentally stack a debuff on a damage buff.
 
 ## Layout
 

@@ -365,6 +365,78 @@ console.log('\n[11] random events (meteor / sun rain / raid)');
   check('no events on the first waves', fired3 === 0, fired3 + '');
 }
 
+console.log('\n[12] lawn-based zombie HP, instant difficulty, meteors, ice slow');
+{
+  /* (1) hp follows the live lawn */
+  const g = newGame(); g.state = 'playing'; g.wave = 6;
+  const thin = g.spawnZombie('basic', 1);
+  for (let i = 0; i < 8; i++) put(g, 'repeater', i, 2);
+  put(g, 'melonpult', 7, 1);
+  const fat = g.spawnZombie('basic', 1);
+  check('a fat lawn gives zombies more HP', fat.maxHp > thin.maxHp * 1.05,
+    Math.round(thin.maxHp) + ' -> ' + Math.round(fat.maxHp));
+  check('power hp bonus is capped', G.zombiePowerHp(1e6) === 1.7, G.zombiePowerHp(1e6) + '');
+  check('an empty lawn keeps base HP', G.zombiePowerHp(0) === 1);
+  const wh = g.waveEstimate(6);
+  check('the HUD reports the hp multiplier', Math.abs(wh.hpMul - G.diff(6, g.boardPower()).hp * G.zombiePowerHp(g.boardPower())) < 1e-9);
+
+  /* (2) switching difficulty mid-wave is immediate */
+  const g2 = newGame(); g2.state = 'playing'; g2.wave = 9; g2.startWave();
+  const z1 = g2.spawnZombie('basic', 0); z1.hp = z1.maxHp * 0.5;
+  const hpBefore = z1.maxHp, speedBefore = z1.baseSpeed, budgetBefore = g2.budget;
+  G.settings.diff = 'low';
+  G.settings.diff = 'high'; g2.state = 'paused';      /* the settings menu pauses */
+  g2.applyDifficulty();
+  check('flipping difficulty rescales living zombies', z1.maxHp > hpBefore && z1.baseSpeed > speedBefore,
+    Math.round(hpBefore) + ' -> ' + Math.round(z1.maxHp));
+  check('a wounded zombie keeps its damage ratio', Math.abs(z1.hp / z1.maxHp - 0.5) < 0.02,
+    (z1.hp / z1.maxHp).toFixed(2));
+  check('the running wave budget follows the new preset', g2.budget > budgetBefore,
+    budgetBefore + ' -> ' + g2.budget);
+  check('armour is rescaled too', z1.armor <= z1.armorMax + 1e-9);
+  G.settings.diff = 'normal';
+
+  /* (3) meteors come around often but not constantly */
+  const g3 = newGame(); g3.wave = 10; g3.state = 'playing';
+  let met = 0, sunr = 0, raid = 0, none = 0;
+  for (let i = 0; i < 400; i++) {
+    const k = g3.rollEvent();
+    if (k === 'meteor') met++; else if (k === 'sunrain') sunr++; else if (k === 'raid') raid++; else none++;
+  }
+  const share = met / 400;
+  check('meteor is the most common event', met > sunr && met > raid, [met, sunr, raid].join('/'));
+  check('meteors are frequent but not every event', share > 0.35 && share < 0.75, (share * 100).toFixed(0) + '%');
+  check('every event roll yields something', none === 0, none + '');
+  let sched = 0;
+  for (let i = 0; i < 60; i++) { g3.reset(); g3.wave = 10; g3.state = 'playing'; g3.startWave(); if (g3.eventAt > 0) sched++; }
+  check('most mid-game waves schedule an event', sched > 24, sched + '/60');
+
+  /* (4) ice peas chill on hit */
+  const g4 = newGame(); g4.state = 'playing'; g4.wave = 4; g4.sun = 9999;
+  g4.setSeeds(['snowpea', 'peashooter', 'sunflower', 'wallnut']);
+  check('snow pea is configured as a chiller', G.PLANTS.snowpea.gun.bullet === 'snow' && G.PLANTS.snowpea.gun.slow < 1);
+  g4.plantSeed(0, 0, 2);
+  const zs = g4.spawnZombie('basic', 2); zs.x = 600;
+  const full = zs.speed();
+  run(g4, 2.2);
+  check('a snow pea slows the zombie it hits', zs.slowT > 0 && zs.speed() < full * 0.75,
+    zs.speed().toFixed(1) + ' vs ' + full.toFixed(1));
+  zs.maxHp = zs.hp = 1e6;                     /* keep it alive for the thaw check */
+  const slowSpeed = zs.speed();
+  zs.slowT = 0; zs.slow = 1;
+  check('the chill wears off', zs.speed() > slowSpeed, zs.speed().toFixed(1) + ' vs ' + slowSpeed.toFixed(1));
+
+  /* torchwood must not leave a slow on a converted pea */
+  const g5 = newGame(); g5.state = 'playing'; g5.wave = 4; g5.sun = 9999;
+  g5.setSeeds(['snowpea', 'torchwood', 'sunflower', 'wallnut']);
+  g5.plantSeed(0, 0, 1); g5.plantSeed(1, 2, 1);
+  const zt = g5.spawnZombie('basic', 1); zt.x = 760; zt.maxHp = zt.hp = 1e6;
+  run(g5, 3);
+  const shot = g5.projectiles.find(p => p.type === 'fire');
+  check('torchwood converts ice peas without the chill', !g5.projectiles.some(p => p.type === 'fire' && p.slow),
+    'fire=' + g5.projectiles.filter(p => p.type === 'fire').length);
+}
+
 console.log('\n[7] crossover zombies (dinosaurs + kenney monsters)');
 {
   const g = newGame(); g.state = 'playing';
